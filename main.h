@@ -10,11 +10,11 @@
 struct Instruction{
     char* name;
     uint32_t encoded_inst;
-    int rs;
-    int rd;
-    int rt;
-    int immed;
-    int shamt;
+    uint8_t rs;
+    uint8_t rd;
+    uint8_t rt;
+    int16_t immed;
+     shamt;
     int instruction_type;
 };
 

@@ -10,11 +10,14 @@
 #define I_INST 1
 #define J_INST 2
 
-int dataMem[200];
-uint32_t instMem[MEM_LENGTH];
-int PC = 0;
+//int dataMem[200];
+//uint32_t instMem[MEM_LENGTH];
+//int PC = 0;
+
+uint32_t reg[32];
 
 struct Instruction* Instruction_Fetch(){
+    /*
     uint32_t inst_fetched;
     inst_fetched = instMem[PC];
 
@@ -23,19 +26,30 @@ struct Instruction* Instruction_Fetch(){
     new_inst->encoded_inst = inst_fetched;
     PC = PC +4;
     return new_inst;
+    */
+
 
 }
 
 struct Instruction* Instruction_Decode(struct Instruction* inst){
-    uint8_t  opcode = (inst->encoded_inst) >> 26;
+    uint8_t  opcode;
+    uint8_t func;
+    uint8_t Rs;
+    uint8_t Rt;
+    uint8_t Rd;
+    uint8_t  Shamt;
+    uint16_t Immed;
+
+    opcode = (inst->encoded_inst) >> 26;
+
     if(opcode == 0x00) {
         inst->instruction_type = R_INST;
 
-        uint8_t func = 0x003f & inst->encoded_inst;
-        uint8_t Rs = ((inst->encoded_inst) >> 21) & 0x001f;
-        uint8_t Rt = ((inst->encoded_inst) >> 16) & 0x001f;
-        uint8_t Rd = ((inst->encoded_inst) >> 11) & 0x001f;
-        uint8_t  Shamt = ((inst->encoded_inst) >> 6) & 0x001f;
+        func = 0x0000003f & inst->encoded_inst;
+        Rs = ((inst->encoded_inst) >> 21) & 0x001f;
+        Rt = ((inst->encoded_inst) >> 16) & 0x001f;
+        Rd = ((inst->encoded_inst) >> 11) & 0x001f;
+        Shamt = ((inst->encoded_inst) >> 6) & 0x001f;
 
         inst->rs = Rs;
         inst->rd = Rd;
@@ -78,7 +92,15 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
     }
     else if(opcode == 0x01){
         inst->instruction_type = I_INST;
+
+        Immed = 0x0000ffff & inst->encoded_inst;
+        Rs = ((inst->encoded_inst) >> 21) & 0x001f;
+        Rt = ((inst->encoded_inst)>> 16) & 0x001f;
+
         inst->name = "BLTZ";
+        inst->immed = Immed;
+        inst->rs = Rs;
+        inst->rt = Rt;
     }
     else if(opcode < 0x04 ){
         inst->instruction_type = J_INST;
@@ -137,27 +159,30 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
         inst->name = "SEB";
     }
 
+
 }
 
-int main(){
-    ssize_t read;
-    ssize_t len;
-    char line[10];
-    char* eptr;
-    uint32_t inst_fetched;
 
-    char string[] = "0x46902800";
-    inst_fetched = strtol(string, &eptr, 0);
-    //uint32_t a = (inst_fetched >> 4);
-    uint16_t b = (inst_fetched >> 16);
-    //printf("%s = %lu = %lu", string, inst_fetched, a);
-    printf("%s = %lu = %lu", string, inst_fetched, b);
-    if(b == 0x4690){
-        printf("YES");
-    }
-    else{
-        printf("BOO");
-    }
+
+int main(){
+//    ssize_t read;
+//    ssize_t len;
+//    char line[10];
+//    char* eptr;
+//    uint32_t inst_fetched;
+//
+//    char string[] = "0x46902800";
+//    inst_fetched = strtol(string, &eptr, 0);
+//    //uint32_t a = (inst_fetched >> 4);
+//    uint16_t b = (inst_fetched >> 16);
+//    //printf("%s = %lu = %lu", string, inst_fetched, a);
+//    printf("%s = %lu = %lu", string, inst_fetched, b);
+//    if(b == 0x4690){
+//        printf("YES");
+//    }
+//    else{
+//        printf("BOO");
+//    }
     /*
     FILE* file = fopen("testfile.txt", "r");
     if(file == NULL){
