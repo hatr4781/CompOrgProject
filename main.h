@@ -14,7 +14,7 @@ struct Instruction{
     uint8_t rd;
     uint8_t rt;
     int16_t immed;
-     shamt;
+    int8_t shamt;
     int instruction_type;
 };
 

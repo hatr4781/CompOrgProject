@@ -4,6 +4,7 @@
 #include <math.h>
 #include <stdint.h>
 #include "main.h"
+#include "Load_Program.h"
 
 #define MEM_LENGTH 200
 #define R_INST 0
@@ -163,38 +164,35 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
 }
 
 
-
 int main(){
-//    ssize_t read;
-//    ssize_t len;
-//    char line[10];
-//    char* eptr;
-//    uint32_t inst_fetched;
-//
-//    char string[] = "0x46902800";
-//    inst_fetched = strtol(string, &eptr, 0);
-//    //uint32_t a = (inst_fetched >> 4);
-//    uint16_t b = (inst_fetched >> 16);
-//    //printf("%s = %lu = %lu", string, inst_fetched, a);
-//    printf("%s = %lu = %lu", string, inst_fetched, b);
-//    if(b == 0x4690){
-//        printf("YES");
-//    }
-//    else{
-//        printf("BOO");
-//    }
-    /*
-    FILE* file = fopen("testfile.txt", "r");
-    if(file == NULL){
-        exit(EXIT_FAILURE);
+    ssize_t read;
+    ssize_t len;
+    int i;
+    char line[10];
+    int instarray[50];
+    char* eptr;
+    int * instpointer;
+    uint32_t inst_fetched;
+    int upper[50];
+    
+    //char string[] = "0x46902800";
+    //char string[] = "0x24060064";
+    //inst_fetched = strtol(string, &eptr, 0);
+    //uint32_t a = (inst_fetched >> 4);
+    //uint16_t b = (inst_fetched >> 16);
+    //printf("%d = %lu = %lu", string, inst_fetched, a);
+    //printf("%s = %lu = %lu\n", string, inst_fetched, b);
+    instpointer = Initialize_Simulation_Memory();
+    for (i=0; i < 19; i++) {
+        instarray[i] = *(instpointer+i);
+        upper[i] = (instarray[i] >> 16);
+        printf( "(instruction line + %d) : fetched: %d, upper four: %d\n", i, instarray[i], upper[i]);
     }
-    */
-    /*
-    if((read = getline(&line, &len, file)) != -1){
-        printf("%s\n", line);
-        inst_fetched = strtol(line, eptr, 0);
+    if(upper[11] == 0x2406){
+        printf("YES\n");
     }
-*/
-//    Instruction_Fetch(file);
+    else{
+        printf("BOO\n");
+    }
 }
 
