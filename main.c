@@ -182,8 +182,10 @@ int main(){
     //uint16_t b = (inst_fetched >> 16);
     //printf("%d = %lu = %lu", string, inst_fetched, a);
     //printf("%s = %lu = %lu\n", string, inst_fetched, b);
+
     instpointer = Initialize_Simulation_Memory();
-    for (i=0; i < 19; i++) {
+
+    for (i=0; i < 20; i++) {
         instarray[i] = *(instpointer+i);
         upper[i] = (instarray[i] >> 16);
         printf( "(instruction line + %d) : fetched: %d, upper four: %d\n", i, instarray[i], upper[i]);
