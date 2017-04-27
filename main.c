@@ -12,19 +12,16 @@
 #define J_INST 2
 
 
-//uint32_t instMem[MEM_LENGTH];
-//int PC = 0;
 
 uint32_t reg[32];
-uint32_t instarray[50];
+uint32_t memory[MEM_LENGTH];
 uint32_t PC;
-uint32_t dataMem[200];
 
 //fetch next instruction and set instruction struct to it
 struct Instruction* Instruction_Fetch(){
 
     uint32_t inst_fetched;
-    inst_fetched = instarray[PC];
+    inst_fetched = memory[PC];
 
     struct Instruction *new_inst;
     new_inst = malloc(sizeof(struct Instruction));
@@ -210,7 +207,7 @@ struct Instruction* Instruction_Execute(struct Instruction* inst){
 struct Instruction* Instruction_Mem(struct Instruction* inst){
     uint32_t val;
     if(inst->name == "LB"){
-        val = 0x000000ff & dataMem[inst->mem_address];
+        val = 0x000000ff & memory[inst->mem_address];
         if((val & 0x80)== 1){
             val = 0xffffff00 | val;
         }
@@ -219,10 +216,10 @@ struct Instruction* Instruction_Mem(struct Instruction* inst){
         }
     }
     else if(inst->name == "LBU") {
-        val = 0x000000ff & dataMem[inst->mem_address];
+        val = 0x000000ff & memory[inst->mem_address];
     }
     else if(inst->name == "LHU"){
-        val = 0x0000ffff & dataMem[inst->mem_address];
+        val = 0x0000ffff & memory[inst->mem_address];
     }
 }
 
@@ -238,19 +235,17 @@ int main(){
     int upper[50];
     
     //char string[] = "0x46902800";
-    //char string[] = "0x24060064";
     //inst_fetched = strtol(string, &eptr, 0);
     //uint32_t a = (inst_fetched >> 4);
     //uint16_t b = (inst_fetched >> 16);
     //printf("%d = %lu = %lu", string, inst_fetched, a);
-    //printf("%s = %lu = %lu\n", string, inst_fetched, b);
 
     instpointer = Initialize_Simulation_Memory();
 
     for (i=0; i < 20; i++) {
-        instarray[i] = *(instpointer+i);
-        upper[i] = (instarray[i] >> 16);
-        printf( "(instruction line + %d) : fetched: %d, upper four: %d\n", i, instarray[i], upper[i]);
+        memory[i] = *(instpointer+i);
+        upper[i] = (memory[i] >> 16);
+        printf( "(instruction line + %d) : fetched: %d, upper four: %d\n", i, memory[i], upper[i]);
     }
     if(upper[11] == 0x2406){
         printf("YES\n");
