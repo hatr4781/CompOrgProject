@@ -1,7 +1,7 @@
 
 
 #define program_starting_address	27
-#define memory_size 1024
+#define memory_size 200
 unsigned int memory[memory_size];
 
 unsigned int program_image[memory_size] = {4000,4000,0,0,0,50,0,0,0,0,

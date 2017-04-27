@@ -207,11 +207,11 @@ struct Instruction* Instruction_Execute(struct Instruction* inst)
     }
     
     if(!strcmp(inst->name, "ADDI")) {
-        inst->rt_val = (inst->rs_val) + (inst->Immed);
+        inst->rt_val = (inst->rs_val) + (inst->immed);
     }
     
     if(!strcmp(inst->name, "ADDIU")) {
-        inst->rt_val = (inst->rs_val) + (inst->Immed);
+        inst->rt_val = (inst->rs_val) + (inst->immed);
     }
     
     if(!strcmp(inst->name, "ADDU")) {
@@ -230,7 +230,7 @@ struct Instruction* Instruction_Execute(struct Instruction* inst)
     }
     
     if(!strcmp(inst->name, "ANDI")) {
-        inst->rt_val = (inst->rs_val) & (inst->Immed);
+        inst->rt_val = (inst->rs_val) & (inst->immed);
     }
     
     if(!strcmp(inst->name, "OR")) {
@@ -238,7 +238,7 @@ struct Instruction* Instruction_Execute(struct Instruction* inst)
     }
     
     if(!strcmp(inst->name, "ORI")) {
-        inst->rt_val = (inst->rs_val)|(inst->Immed);
+        inst->rt_val = (inst->rs_val)|(inst->immed);
     }
 
     if(!strcmp(inst->name, "SLT")) {
@@ -246,11 +246,11 @@ struct Instruction* Instruction_Execute(struct Instruction* inst)
     }
     
     if(!strcmp(inst->name, "SLTI")) {
-        inst->rt_val =((inst->rs_val)<(inst->Immed))?1:0;
+        inst->rt_val =((inst->rs_val)<(inst->immed))?1:0;
     }
     
     if(!strcmp(inst->name, "SLTIU")) {
-        inst->rt_val =((inst->rs_val)<(inst->Immed))?1:0;
+        inst->rt_val =((inst->rs_val)<(inst->immed))?1:0;
     }
     
     if(!strcmp(inst->name, "SLTU")) {
@@ -262,7 +262,7 @@ struct Instruction* Instruction_Execute(struct Instruction* inst)
     }
     
     if(!strcmp(inst->name, "XORI")) {
-        inst->rt_val = (inst->rs_val)^(inst->Immed);
+        inst->rt_val = (inst->rs_val)^(inst->immed);
     }
     
     if(!strcmp(inst->name, "NOR")) {
@@ -301,7 +301,7 @@ struct Instruction* Instruction_Execute(struct Instruction* inst)
         reg[31] = PC+8;
         PC = inst->addr;
     }
-    
+    /*
     if(!strcmp(inst->name, "LB")) {
     
     }
@@ -350,9 +350,9 @@ struct Instruction* Instruction_Execute(struct Instruction* inst)
     if(!strcmp(inst->name, "BLEZ")) {
     
     }
+*/
 
-
-    return;
+    return inst;
 
 }
 
@@ -395,10 +395,14 @@ int main(){
 
     instpointer = Initialize_Simulation_Memory();
 
-    for (i=0; i < 20; i++) {
+    for (i=11; i < 20; i++) {
         memory[i] = *(instpointer+i);
         upper[i] = (memory[i] >> 16);
         printf( "(instruction line + %d) : fetched: %d, upper four: %d\n", i, memory[i], upper[i]);
+        struct Instruction * inst = Instruction_Fetch();
+        inst = Instruction_Decode(inst);
+        inst = Instruction_Execute(inst);
+        printf("%d,%d,%d\n", inst->rd_val, inst->rt_val, inst->rs_val);
     }
     if(upper[11] == 0x2406){
         printf("YES\n");
@@ -406,5 +410,6 @@ int main(){
     else{
         printf("BOO\n");
     }
+
 }
 
