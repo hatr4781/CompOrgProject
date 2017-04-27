@@ -11,27 +11,29 @@
 #define I_INST 1
 #define J_INST 2
 
-//int dataMem[200];
+
 //uint32_t instMem[MEM_LENGTH];
 //int PC = 0;
 
 uint32_t reg[32];
+uint32_t instarray[50];
+uint32_t PC;
+uint32_t dataMem[200];
 
+//fetch next instruction and set instruction struct to it
 struct Instruction* Instruction_Fetch(){
-    /*
+
     uint32_t inst_fetched;
-    inst_fetched = instMem[PC];
+    inst_fetched = instarray[PC];
 
     struct Instruction *new_inst;
     new_inst = malloc(sizeof(struct Instruction));
     new_inst->encoded_inst = inst_fetched;
-    PC = PC +4;
+    PC = PC + 1;
     return new_inst;
-    */
-
-
 }
 
+//decode current instruction by instruction type and instruction fields
 struct Instruction* Instruction_Decode(struct Instruction* inst){
     uint8_t  opcode;
     uint8_t func;
@@ -41,9 +43,15 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
     uint8_t  Shamt;
     uint16_t Immed;
 
+
+
     opcode = (inst->encoded_inst) >> 26;
 
-    if(opcode == 0x00) {
+    if(inst->encoded_inst == 0x00000000){
+        inst->name = "NOP";
+    }
+
+    else if(opcode == 0x00) {
         inst->instruction_type = R_INST;
 
         func = 0x0000003f & inst->encoded_inst;
@@ -56,6 +64,9 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
         inst->rd = Rd;
         inst->rt = Rt;
         inst->shamt = Shamt;
+
+        inst->rs_val = reg[Rs];
+        inst->rt_val = reg[Rt];
 
         switch(func){
             case 0x20:
@@ -102,9 +113,16 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
         inst->immed = Immed;
         inst->rs = Rs;
         inst->rt = Rt;
+
+        inst->rs_val = Rs;
     }
     else if(opcode < 0x04 ){
         inst->instruction_type = J_INST;
+
+        uint32_t Addr;
+        Addr = (inst->encoded_inst) & 0x03ffffff;
+        inst->addr = Addr;
+
         switch(opcode){
             case 0x02:
                 inst->name = "J";
@@ -112,8 +130,17 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
                 inst->name = "JAL";
         }
     }
+
     else if(opcode < 0x1f){
         inst->instruction_type = I_INST;
+
+        Immed = 0x0000ffff & inst->encoded_inst;
+        Rs = ((inst->encoded_inst) >> 21) & 0x001f;
+        Rt = ((inst->encoded_inst)>> 16) & 0x001f;
+
+        inst->rs_val = Rs;
+        inst->rt = Rt;
+
         switch(opcode){
             case 0x20:
                 inst->name = "LB";
@@ -157,10 +184,46 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
     }
     else if(opcode == 0x1f){
         inst->instruction_type = R_INST;
+
+        func = 0x0000003f & inst->encoded_inst;
+        Rs = ((inst->encoded_inst) >> 21) & 0x001f;
+        Rt = ((inst->encoded_inst) >> 16) & 0x001f;
+        Rd = ((inst->encoded_inst) >> 11) & 0x001f;
+        Shamt = ((inst->encoded_inst) >> 6) & 0x001f;
+
+        inst->rs = Rs;
+        inst->rt = Rt;
+        inst->rd = Rd;
+
         inst->name = "SEB";
+        inst->rs_val = Rs;
+        inst->rt_val = Rt;
     }
+    return inst;
+}
 
+struct Instruction* Instruction_Execute(struct Instruction* inst){
 
+}
+
+//Accessing memory for load/store instructions
+struct Instruction* Instruction_Mem(struct Instruction* inst){
+    uint32_t val;
+    if(inst->name == "LB"){
+        val = 0x000000ff & dataMem[inst->mem_address];
+        if((val & 0x80)== 1){
+            val = 0xffffff00 | val;
+        }
+        else{
+            val = 0x00000000 & val;
+        }
+    }
+    else if(inst->name == "LBU") {
+        val = 0x000000ff & dataMem[inst->mem_address];
+    }
+    else if(inst->name == "LHU"){
+        val = 0x0000ffff & dataMem[inst->mem_address];
+    }
 }
 
 
@@ -169,7 +232,6 @@ int main(){
     ssize_t len;
     int i;
     char line[10];
-    int instarray[50];
     char* eptr;
     int * instpointer;
     uint32_t inst_fetched;
