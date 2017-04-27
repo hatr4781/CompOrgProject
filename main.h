@@ -5,7 +5,23 @@
 #ifndef PROJECT_MAIN_H
 #define PROJECT_MAIN_H
 
+#include "IF.h"
+#include "ID.h"
+#include "EX.h"
+#include "MEM.h"
+#include "WB.h"
+#include "datamemory.h"
+
+#define MEM_LENGTH 200
+#define R_INST 0
+#define I_INST 1
+#define J_INST 2
+
 #include <stdint.h>
+
+uint32_t reg[32];
+uint32_t memory[MEM_LENGTH];
+uint32_t PC;
 
 struct Instruction* Instruction_Fetch();
 struct Instruction* Instruction_Decode(struct Instruction* inst);

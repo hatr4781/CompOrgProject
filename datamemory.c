@@ -1,4 +1,5 @@
 #include "datamemory.h"
+#include "main.h"
 
 void store_mem(int position, struct data_memory *dm, char * input_name, int input_value)
 {
@@ -10,7 +11,7 @@ void store_mem(int position, struct data_memory *dm, char * input_name, int inpu
 
     strcpy(dm->memory[position].element_name, input_name);
     dm->memory[position].value = input_value;
-    return
+    return;
 }
 
 int get_memory_location(char * input_name, struct data_memory *dm)

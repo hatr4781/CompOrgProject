@@ -9,7 +9,7 @@ struct data_memory
     {
         char element_name[30];
         int value;
-    }
+    };
 };
 
 void store_mem(int position,struct data_memory *dm,char * input_name,int input_value);
