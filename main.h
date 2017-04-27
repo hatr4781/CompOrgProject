@@ -10,7 +10,6 @@
 #include "EX.h"
 #include "MEM.h"
 #include "WB.h"
-#include "datamemory.h"
 
 #define MEM_LENGTH 200
 #define R_INST 0
