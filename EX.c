@@ -107,6 +107,7 @@ struct Instruction* Instruction_Execute(struct Instruction* inst)
         PC = inst->addr;
     }
 
+    //Memory Functions
     if(!strcmp(inst->name, "LB")) {
         inst->addr = inst->rs_val+inst->immed;
     }
