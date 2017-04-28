@@ -30,7 +30,7 @@ int main(){
         printf( "(instruction line + %d) : fetched: %d, upper four: %d\n", i, memory[i], upper[i]);
         struct Instruction * inst = Instruction_Fetch();
         inst = Instruction_Decode(inst);
-        //inst = Instruction_Execute(inst);
+       // inst = Instruction_Execute(inst);
         printf("function:%s,rd_val:%d,rt_val:%d,rs_val:%d,Immed:%d\n",inst->name, inst->rd_val, inst->rt_val, inst->rs_val, inst->immed);
     }
     if(upper[11] == 0x2406){

@@ -14,6 +14,7 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
 
     if(inst->encoded_inst == 0x00000000){
         inst->name = "NOP";
+        return inst;
     }
 
     else if(opcode == 0x00) {
