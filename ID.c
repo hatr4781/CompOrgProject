@@ -106,6 +106,7 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
 
         inst->rs_val = reg[Rs];
         inst->rt = Rt;
+        inst->immed = Immed;
 
         switch(opcode){
             case 0x20:

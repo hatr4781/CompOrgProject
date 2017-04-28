@@ -3,6 +3,10 @@
 
 struct Instruction* Instruction_Execute(struct Instruction* inst)
 {
+    if(!strcmp(inst->name, "NOP")) {
+        return inst;
+    }
+
     if(!strcmp(inst->name, "ADD")) {
         inst->rd_val = (inst->rs_val) + (inst->rt_val);
     }
@@ -99,59 +103,66 @@ struct Instruction* Instruction_Execute(struct Instruction* inst)
     }
 
     if(!strcmp(inst->name, "JAL")) {
-        reg[31] = PC+8;
+        reg[31] = PC+2;
         PC = inst->addr;
     }
-    /*
+
     if(!strcmp(inst->name, "LB")) {
-
+        inst->addr = inst->rs_val+inst->immed;
     }
 
-    }
     if(!strcmp(inst->name, "LBU")) {
-
+        inst->addr = inst->rs_val+inst->immed;
     }
 
     if(!strcmp(inst->name, "LHU")) {
-
+        inst->addr = inst->rs_val+inst->immed;
     }
 
     if(!strcmp(inst->name, "LUI")) {
-
+        inst->addr = inst->immed;
     }
 
     if(!strcmp(inst->name, "LW")) {
-
+        inst->addr = inst->rs_val+inst->immed;
     }
 
     if(!strcmp(inst->name, "SB")) {
-
+        inst->addr = inst->rs_val+inst->immed;
     }
 
     if(!strcmp(inst->name, "SH")) {
-
+        inst->addr = inst->rs_val+inst->immed;
     }
 
     if(!strcmp(inst->name, "SW")) {
-
+        inst->addr = inst->rs_val+inst->immed;
     }
 
     if(!strcmp(inst->name, "BEQ")) {
-
+        if(inst->rs_val==inst->rt_val) {
+            PC = PC + 4 + ((inst->immed) << 2);
+        }
     }
 
     if(!strcmp(inst->name, "BNE")) {
-
+        if(inst->rs_val!=inst->rt_val) {
+            PC = PC + 4 + ((inst->immed) << 2);
+        }
     }
 
     if(!strcmp(inst->name, "BGTZ")) {
-
+        if(inst->rs_val > 0) {
+            PC = PC + ((inst->immed) << 2);
+        }
     }
 
     if(!strcmp(inst->name, "BLEZ")) {
-
+        if(inst->rs_val <= 0) {
+            PC = PC + ((inst->immed) << 2);
+        }
     }
-*/
+
 
     return inst;
 

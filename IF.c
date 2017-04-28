@@ -1,5 +1,4 @@
-
-#include <malloc.h>
+#include <stdlib.h>
 #include "IF.h"
 
 

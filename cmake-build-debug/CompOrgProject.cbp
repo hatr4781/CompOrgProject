@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6"/>
+	<Project>
+		<Option title="CompOrgProject"/>
+		<Option makefile_is_custom="1"/>
+		<Option compiler="gcc"/>
+		<Option virtualFolders="CMake Files\;"/>
+		<Build>
+			<Target title="all">
+				<Option working_dir="/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 all"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="rebuild_cache">
+				<Option working_dir="/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 rebuild_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="edit_cache">
+				<Option working_dir="/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug"/>
+				<Option type="4"/>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 edit_cache"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CompOrgProject">
+				<Option output="/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/CompOrgProject" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 CompOrgProject"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+			<Target title="CompOrgProject/fast">
+				<Option output="/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/CompOrgProject" prefix_auto="0" extension_auto="0"/>
+				<Option working_dir="/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug"/>
+				<Option object_output="./"/>
+				<Option type="1"/>
+				<Option compiler="gcc"/>
+				<Compiler>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../include/c++/v1"/>
+					<Add directory="/usr/local/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/../lib/clang/8.0.0/include"/>
+					<Add directory="/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include"/>
+					<Add directory="/usr/include"/>
+					<Add directory="/System/Library/Frameworks"/>
+					<Add directory="/Library/Frameworks"/>
+				</Compiler>
+				<MakeCommands>
+					<Build command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 CompOrgProject/fast"/>
+					<CompileFile command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 &quot;$file&quot;"/>
+					<Clean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+					<DistClean command="/usr/bin/make -j4 -f &quot;/Users/seungjeongpark/comporg/CompOrgProject/cmake-build-debug/Makefile&quot;  VERBOSE=1 clean"/>
+				</MakeCommands>
+			</Target>
+		</Build>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/EX.c">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/EX.h">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/ID.c">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/ID.h">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/IF.c">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/IF.h">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/Load_Program.h">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/MEM.c">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/MEM.h">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/WB.c">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/WB.h">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/main.c">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/main.h">
+			<Option target="CompOrgProject"/>
+		</Unit>
+		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/CMakeLists.txt">
+			<Option virtualFolder="CMake Files\"/>
+		</Unit>
+	</Project>
+</CodeBlocks_project_file>
