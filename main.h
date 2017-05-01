@@ -35,7 +35,7 @@ uint32_t PC;
 
 struct Instruction* Instruction_Fetch();
 struct Instruction* Instruction_Decode(struct Instruction* inst);
-
+void Initialize_Simulation_Memory();
 struct Instruction{
     char* name;
     uint32_t encoded_inst;

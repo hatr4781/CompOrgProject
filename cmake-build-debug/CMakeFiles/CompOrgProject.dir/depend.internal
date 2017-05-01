@@ -22,6 +22,7 @@ CMakeFiles/CompOrgProject.dir/IF.c.o
  /Users/seungjeongpark/comporg/CompOrgProject/ID.h
  /Users/seungjeongpark/comporg/CompOrgProject/IF.c
  /Users/seungjeongpark/comporg/CompOrgProject/IF.h
+ /Users/seungjeongpark/comporg/CompOrgProject/Load_Program.h
  /Users/seungjeongpark/comporg/CompOrgProject/MEM.h
  /Users/seungjeongpark/comporg/CompOrgProject/WB.h
  /Users/seungjeongpark/comporg/CompOrgProject/main.h
@@ -40,7 +41,6 @@ CMakeFiles/CompOrgProject.dir/main.c.o
  /Users/seungjeongpark/comporg/CompOrgProject/EX.h
  /Users/seungjeongpark/comporg/CompOrgProject/ID.h
  /Users/seungjeongpark/comporg/CompOrgProject/IF.h
- /Users/seungjeongpark/comporg/CompOrgProject/Load_Program.h
  /Users/seungjeongpark/comporg/CompOrgProject/MEM.h
  /Users/seungjeongpark/comporg/CompOrgProject/WB.h
  /Users/seungjeongpark/comporg/CompOrgProject/main.c

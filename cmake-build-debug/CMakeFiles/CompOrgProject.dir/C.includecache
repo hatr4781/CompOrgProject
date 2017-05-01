@@ -29,12 +29,16 @@ stdlib.h
 -
 IF.h
 /Users/seungjeongpark/comporg/CompOrgProject/IF.h
+Load_Program.h
+/Users/seungjeongpark/comporg/CompOrgProject/Load_Program.h
 
 /Users/seungjeongpark/comporg/CompOrgProject/IF.h
 main.h
 /Users/seungjeongpark/comporg/CompOrgProject/main.h
 
 /Users/seungjeongpark/comporg/CompOrgProject/Load_Program.h
+main.h
+/Users/seungjeongpark/comporg/CompOrgProject/main.h
 
 /Users/seungjeongpark/comporg/CompOrgProject/MEM.c
 MEM.h
@@ -63,8 +67,6 @@ stdint.h
 -
 main.h
 /Users/seungjeongpark/comporg/CompOrgProject/main.h
-Load_Program.h
-/Users/seungjeongpark/comporg/CompOrgProject/Load_Program.h
 
 /Users/seungjeongpark/comporg/CompOrgProject/main.h
 IF.h

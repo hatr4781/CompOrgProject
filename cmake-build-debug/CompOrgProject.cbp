@@ -100,9 +100,6 @@
 		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/IF.h">
 			<Option target="CompOrgProject"/>
 		</Unit>
-		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/Load_Program.h">
-			<Option target="CompOrgProject"/>
-		</Unit>
 		<Unit filename="/Users/seungjeongpark/comporg/CompOrgProject/MEM.c">
 			<Option target="CompOrgProject"/>
 		</Unit>
