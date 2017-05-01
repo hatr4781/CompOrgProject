@@ -4,8 +4,8 @@
 struct Instruction* Instruction_Decode(struct Instruction* inst){
     uint8_t  opcode;
     uint8_t func;
-    uint8_t Rs;
-    uint8_t Rt;
+    int8_t Rs;
+    int8_t Rt;
     uint8_t Rd;
     uint8_t  Shamt;
     uint16_t Immed;

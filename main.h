@@ -18,9 +18,20 @@
 
 #include <stdint.h>
 
-uint32_t reg[32];
+typedef int8_t SIGNED_BYTE;
+typedef uint8_t UNSIGNED_BYTE;
+
+typedef int16_t SIGNED_HALFWORD;
+typedef uint16_t UNSIGNED_HALFWORD;
+
+typedef int32_t SIGNED_WORD;
+typedef uint32_t UNSIGNED_WORD;
+
+int32_t reg[32];
 uint32_t memory[MEM_LENGTH];
 uint32_t PC;
+
+
 
 struct Instruction* Instruction_Fetch();
 struct Instruction* Instruction_Decode(struct Instruction* inst);
@@ -29,11 +40,11 @@ struct Instruction{
     char* name;
     uint32_t encoded_inst;
     uint8_t rs;
-    uint32_t rs_val;
+    int32_t rs_val;
     uint8_t rd;
-    uint32_t rd_val;
+    int32_t rd_val;
     uint8_t rt;
-    uint32_t rt_val;
+    int32_t rt_val;
     uint16_t immed;
     uint8_t shamt;
     uint32_t addr;
