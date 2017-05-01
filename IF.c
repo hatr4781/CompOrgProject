@@ -6,6 +6,7 @@ int * instpointer;
 //fetch next instruction and set instruction struct to it
 struct Instruction* Instruction_Fetch(){
     uint32_t inst_fetched;
+    Initialize_Simulation_Memory();
     inst_fetched = memory[PC];
     struct Instruction *new_inst;
     new_inst = malloc(sizeof(struct Instruction));

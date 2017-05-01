@@ -26,6 +26,15 @@ CMakeFiles/CompOrgProject.dir/IF.c.o: ../MEM.h
 CMakeFiles/CompOrgProject.dir/IF.c.o: ../WB.h
 CMakeFiles/CompOrgProject.dir/IF.c.o: ../main.h
 
+CMakeFiles/CompOrgProject.dir/Load_Program.c.o: ../EX.h
+CMakeFiles/CompOrgProject.dir/Load_Program.c.o: ../ID.h
+CMakeFiles/CompOrgProject.dir/Load_Program.c.o: ../IF.h
+CMakeFiles/CompOrgProject.dir/Load_Program.c.o: ../Load_Program.c
+CMakeFiles/CompOrgProject.dir/Load_Program.c.o: ../Load_Program.h
+CMakeFiles/CompOrgProject.dir/Load_Program.c.o: ../MEM.h
+CMakeFiles/CompOrgProject.dir/Load_Program.c.o: ../WB.h
+CMakeFiles/CompOrgProject.dir/Load_Program.c.o: ../main.h
+
 CMakeFiles/CompOrgProject.dir/MEM.c.o: ../EX.h
 CMakeFiles/CompOrgProject.dir/MEM.c.o: ../ID.h
 CMakeFiles/CompOrgProject.dir/MEM.c.o: ../IF.h

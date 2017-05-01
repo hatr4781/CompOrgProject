@@ -5,6 +5,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/CompOrgProject.dir/IF.c.o"
   "CMakeFiles/CompOrgProject.dir/ID.c.o"
   "CMakeFiles/CompOrgProject.dir/EX.c.o"
+  "CMakeFiles/CompOrgProject.dir/Load_Program.c.o"
   "CompOrgProject.pdb"
   "CompOrgProject"
 )

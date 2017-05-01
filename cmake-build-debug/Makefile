@@ -204,6 +204,33 @@ IF.c.s:
 	$(MAKE) -f CMakeFiles/CompOrgProject.dir/build.make CMakeFiles/CompOrgProject.dir/IF.c.s
 .PHONY : IF.c.s
 
+Load_Program.o: Load_Program.c.o
+
+.PHONY : Load_Program.o
+
+# target to build an object file
+Load_Program.c.o:
+	$(MAKE) -f CMakeFiles/CompOrgProject.dir/build.make CMakeFiles/CompOrgProject.dir/Load_Program.c.o
+.PHONY : Load_Program.c.o
+
+Load_Program.i: Load_Program.c.i
+
+.PHONY : Load_Program.i
+
+# target to preprocess a source file
+Load_Program.c.i:
+	$(MAKE) -f CMakeFiles/CompOrgProject.dir/build.make CMakeFiles/CompOrgProject.dir/Load_Program.c.i
+.PHONY : Load_Program.c.i
+
+Load_Program.s: Load_Program.c.s
+
+.PHONY : Load_Program.s
+
+# target to generate assembly for a file
+Load_Program.c.s:
+	$(MAKE) -f CMakeFiles/CompOrgProject.dir/build.make CMakeFiles/CompOrgProject.dir/Load_Program.c.s
+.PHONY : Load_Program.c.s
+
 MEM.o: MEM.c.o
 
 .PHONY : MEM.o
@@ -303,6 +330,9 @@ help:
 	@echo "... IF.o"
 	@echo "... IF.i"
 	@echo "... IF.s"
+	@echo "... Load_Program.o"
+	@echo "... Load_Program.i"
+	@echo "... Load_Program.s"
 	@echo "... MEM.o"
 	@echo "... MEM.i"
 	@echo "... MEM.s"

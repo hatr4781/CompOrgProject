@@ -1,6 +1,6 @@
 /* Porting example code to test */
 #include "Load_Program.h"
-
+#define memory_size 200
 
 
 unsigned int memory[memory_size];
