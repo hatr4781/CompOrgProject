@@ -46,7 +46,7 @@ struct Instruction{
     uint16_t immed;
     uint8_t shamt;
     uint32_t addr;
-    uint32_t mem_address;
+//    uint32_t mem_address;
 
     int instruction_type;
 };
