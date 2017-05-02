@@ -14,7 +14,6 @@ int main(){
     char* eptr;
     uint32_t inst_fetched;
     int upper[50];
-
     //char string[] = "0x46902800";
     //inst_fetched = strtol(string, &eptr, 0);
     //uint32_t a = (inst_fetched >> 4);
@@ -28,10 +27,10 @@ int main(){
         //upper[i] = (memory[i] >> 16);
         struct Instruction * inst = Instruction_Fetch();
         printf( "(instruction line + %d) : fetched: %08x, upper four: %d\n", PC, inst->encoded_inst, upper[PC]);
-        printf("encoded: %08x\n", inst->encoded_inst);
+        printf("encoded: %8x\n", inst->encoded_inst);
         inst = Instruction_Decode(inst);
        // inst = Instruction_Execute(inst);
-        printf("Inst Type:%d, function:%s,rd_val:%d,rt_val:%d,rs_val:%d,Immed:%d\n",inst->instruction_type,inst->name, inst->rd_val, inst->rt_val, inst->rs_val, inst->immed);
+ //       printf("Inst Type:%d,function:%s,rd_val:%d,rt_val:%d,rs_val:%d,Immed:%d\n",inst->instruction_type,inst->name, inst->rd_val, inst->rt_val, inst->rs_val, inst->immed);
     }
     if(upper[11] == 0x2406){
         printf("YES\n");
