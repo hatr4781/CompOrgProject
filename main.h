@@ -31,8 +31,6 @@ int32_t reg[32];
 uint32_t memory[MEM_LENGTH];
 uint32_t PC;
 
-
-
 struct Instruction* Instruction_Fetch();
 struct Instruction* Instruction_Decode(struct Instruction* inst);
 void Initialize_Simulation_Memory();

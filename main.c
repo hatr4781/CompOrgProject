@@ -9,7 +9,6 @@
 int main(){
     ssize_t read;
     ssize_t len;
-    int PC;
     char line[10];
     char* eptr;
     uint32_t inst_fetched;
@@ -21,14 +20,15 @@ int main(){
     //printf("%d = %lu = %lu", string, inst_fetched, a);
 
 
-
-    for (PC=0; PC < 20; PC++) {
+    for (PC=9; PC < 75; PC++) {
         //memory[i] = *(instpointer+i);
         //upper[i] = (memory[i] >> 16);
-        struct Instruction * inst = Instruction_Fetch();
+        struct Instruction* inst = Instruction_Fetch();
+        struct Instruction* decode_pointer;
         printf( "(instruction line + %d) : fetched: %08x, upper four: %d\n", PC, inst->encoded_inst, upper[PC]);
         printf("encoded: %8x\n", inst->encoded_inst);
-        inst = Instruction_Decode(inst);
+        decode_pointer = Instruction_Decode(inst);
+        printf("Name: %s\n", inst->name);
        // inst = Instruction_Execute(inst);
  //       printf("Inst Type:%d,function:%s,rd_val:%d,rt_val:%d,rs_val:%d,Immed:%d\n",inst->instruction_type,inst->name, inst->rd_val, inst->rt_val, inst->rs_val, inst->immed);
     }
