@@ -19,6 +19,8 @@ main.h
 /Users/seungjeongpark/comporg/CompOrgProject/ID.c
 ID.h
 /Users/seungjeongpark/comporg/CompOrgProject/ID.h
+stdio.h
+-
 
 /Users/seungjeongpark/comporg/CompOrgProject/ID.h
 main.h
@@ -55,6 +57,8 @@ main.h
 /Users/seungjeongpark/comporg/CompOrgProject/WB.c
 WB.h
 /Users/seungjeongpark/comporg/CompOrgProject/WB.h
+string.h
+/Users/seungjeongpark/comporg/CompOrgProject/string.h
 
 /Users/seungjeongpark/comporg/CompOrgProject/WB.h
 

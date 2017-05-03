@@ -123,6 +123,33 @@ CompOrgProject/fast:
 	$(MAKE) -f CMakeFiles/CompOrgProject.dir/build.make CMakeFiles/CompOrgProject.dir/build
 .PHONY : CompOrgProject/fast
 
+Cache.o: Cache.c.o
+
+.PHONY : Cache.o
+
+# target to build an object file
+Cache.c.o:
+	$(MAKE) -f CMakeFiles/CompOrgProject.dir/build.make CMakeFiles/CompOrgProject.dir/Cache.c.o
+.PHONY : Cache.c.o
+
+Cache.i: Cache.c.i
+
+.PHONY : Cache.i
+
+# target to preprocess a source file
+Cache.c.i:
+	$(MAKE) -f CMakeFiles/CompOrgProject.dir/build.make CMakeFiles/CompOrgProject.dir/Cache.c.i
+.PHONY : Cache.c.i
+
+Cache.s: Cache.c.s
+
+.PHONY : Cache.s
+
+# target to generate assembly for a file
+Cache.c.s:
+	$(MAKE) -f CMakeFiles/CompOrgProject.dir/build.make CMakeFiles/CompOrgProject.dir/Cache.c.s
+.PHONY : Cache.c.s
+
 EX.o: EX.c.o
 
 .PHONY : EX.o
@@ -321,6 +348,9 @@ help:
 	@echo "... rebuild_cache"
 	@echo "... edit_cache"
 	@echo "... CompOrgProject"
+	@echo "... Cache.o"
+	@echo "... Cache.i"
+	@echo "... Cache.s"
 	@echo "... EX.o"
 	@echo "... EX.i"
 	@echo "... EX.s"

@@ -20,7 +20,7 @@ int main(){
     //printf("%d = %lu = %lu", string, inst_fetched, a);
 
 
-    for (PC=9; PC < 75; PC++) {
+    for (PC=10; PC < 75; PC++) {
         //memory[i] = *(instpointer+i);
         //upper[i] = (memory[i] >> 16);
         struct Instruction* inst = Instruction_Fetch();
@@ -30,7 +30,7 @@ int main(){
         decode_pointer = Instruction_Decode(inst);
         printf("Name: %s\n", inst->name);
        // inst = Instruction_Execute(inst);
- //       printf("Inst Type:%d,function:%s,rd_val:%d,rt_val:%d,rs_val:%d,Immed:%d\n",inst->instruction_type,inst->name, inst->rd_val, inst->rt_val, inst->rs_val, inst->immed);
+        printf("Inst Type:%d,rd_val:%d,rt_val:%d,rs_val:%d,Immed:%d\n\n",inst->instruction_type,inst->rd_val, inst->rt_val, inst->rs_val, inst->immed);
     }
     if(upper[11] == 0x2406){
         printf("YES\n");

@@ -6,6 +6,6 @@ set(CMAKE_CXX_STANDARD 11)
 set(SOURCE_FILES
         main.c
         main.h
-        MEM.c MEM.h WB.c WB.h IF.c IF.h ID.h ID.c EX.h EX.c Load_Program.c Load_Program.h)
+        MEM.c MEM.h WB.c WB.h IF.c IF.h ID.h ID.c EX.h EX.c Load_Program.c Load_Program.h cmake-build-debug/Cache.c)
 
 add_executable(CompOrgProject ${SOURCE_FILES})

@@ -11,7 +11,7 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
     uint16_t Immed;
 
     opcode = (inst->encoded_inst) >> 26;
-    printf("opcode = %d = %8x\n", opcode, opcode);
+    printf("opcode = %d = %x\n", opcode, opcode);
     if(inst->encoded_inst == 0x00000000){
         inst->name = "NOP";
     }
