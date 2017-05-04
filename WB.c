@@ -4,10 +4,11 @@
 
 #include "WB.h"
 #include "string.h"
-struct Instruction* Instruction_WriteBack(struct Instruction* inst)
+void Instruction_WriteBack(struct Instruction* inst)
 {
+
     if(!strcmp(inst->name, "NOP")) {
-        return inst;
+        return;
     }
 
     if(!strcmp(inst->name, "ADD")) {

@@ -10,11 +10,18 @@
 #include "EX.h"
 #include "MEM.h"
 #include "WB.h"
+#include <stdio.h>
+//#include "Load_Program.h"
 
-#define MEM_LENGTH 200
+#define MEM_LENGTH 1200
 #define R_INST 0
 #define I_INST 1
 #define J_INST 2
+
+/*
+#define SP reg[29]
+#define FP reg[30]
+*/
 
 #include <stdint.h>
 
@@ -29,10 +36,14 @@ typedef uint32_t UNSIGNED_WORD;
 
 int32_t reg[32];
 uint32_t memory[MEM_LENGTH];
-uint32_t PC;
 
+int32_t PC;
+
+/*
 struct Instruction* Instruction_Fetch();
-struct Instruction* Instruction_Decode(struct Instruction* inst);
+struct Instruction* Instruction_Decode(Instruction* inst);
+*/
+
 void Initialize_Simulation_Memory();
 struct Instruction{
     char* name;
@@ -43,7 +54,7 @@ struct Instruction{
     int32_t rd_val;
     uint8_t rt;
     int32_t rt_val;
-    uint16_t immed;
+    int32_t immed;
     uint8_t shamt;
     uint32_t addr;
 //    uint32_t mem_address;
@@ -51,6 +62,23 @@ struct Instruction{
     int instruction_type;
 };
 
+/*
+typedef struct {
+    Instruction* ID;
+    Instruction* IF;
+    Instruction* EX;
+    Instruction* MEM;
+    Instruction* WB;
+} Shadow;
+*/
+
+
+/*
+struct Instruction* IF_inst;
+struct Instruction* ID_inst;
+struct Instruction* _inst;
+struct Instruction*
+*/
 
 
 #endif //PROJECT_MAIN_H

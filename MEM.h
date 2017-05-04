@@ -16,6 +16,6 @@
 #define HALF_0 0x0000ffff
 #define HALF_1 0xffff0000
 
-struct Instruction* Instruction_Mem(struct Instruction* inst);
+struct Instruction* Instruction_Memory(struct Instruction* inst);
 
 #endif //COMPORGPROJECT_MEM_H

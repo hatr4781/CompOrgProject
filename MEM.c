@@ -39,7 +39,7 @@ struct Instruction* Instruction_Memory(struct Instruction* inst){
                 val = 0xffffff00 | val;
             }
         }
-        inst->rt_val = (SIGNED_WORD) val;
+        inst->rt_val = val;
     }
 
     else if(inst->name == "LBU") {
@@ -108,4 +108,5 @@ struct Instruction* Instruction_Memory(struct Instruction* inst){
         }
         memory[mem_word] = temp | val;
     }
+    return inst;
 }
