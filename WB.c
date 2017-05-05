@@ -19,6 +19,7 @@ void Instruction_WriteBack(struct Instruction* inst)
         reg[inst->rt] = inst->rt_val;
     }
 
+
     if(!strcmp(inst->name, "ADDIU")) {
         reg[inst->rt] = inst->rt_val;
     }

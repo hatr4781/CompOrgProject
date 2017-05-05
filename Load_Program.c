@@ -147,13 +147,13 @@ unsigned int program_image[memory_size] = {
         0x00000000,   // 	nop
         0x00000000,   // 	nop
         0x00000000,   // 	nop
-        0x27bdf7f8,   // 	addiu	sp,sp,-2056
+        0x27bdf7f8,   // 	addiu	sp,sp,-2056 load params
         0xafbf0804,   // 	sw	ra,2052(sp)
         0xafb30800,   // 	sw	s3,2048(sp)
         0xafb207fc,   // 	sw	s2,2044(sp)
         0xafb107f8,   // 	sw	s1,2040(sp)
         0xafb007f4,   // 	sw	s0,2036(sp)
-        0x8c420000,   // 	lw	v0,0(v0)
+        0x8c420000,   // 	lw	v0,0(v0) why load zero into zero?
         0xafa207ec,   // 	sw	v0,2028(sp)
         0x240600fa,   // 	li	a2,250
         0x27b10404,   // 	addiu	s1,sp,1028

@@ -110,18 +110,18 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
         Addr = (inst->encoded_inst) & 0x03ffffff;
 
         //format jump address
-        Addr = (Addr << 2) ;
+        //Addr = (Addr << 2) ;
         inst->addr = Addr;
 
         switch(opcode){
             case 0x02:
                 inst->name = "J";
-                PC = (inst->addr)/4;
+                PC = (inst->addr);
                 break;
             case 0x03:
                 inst->name = "JAL";
                 reg[31] = PC + 1;
-                PC = (inst->addr)/4;
+                PC = (inst->addr);
                 break;
             default:
                 inst->name = "ERR";
@@ -235,7 +235,7 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
                     }
                     Immed = (Immed << 2);
                     inst->immed = Immed;
-                    PC = PC + (Immed/4);
+                    PC = PC + Immed;
                 }
                 break;
             case 0x05:
@@ -244,9 +244,9 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
                     if (Immed & 0x00008000) {
                         Immed = Immed | 0xffff0000;
                     }
-                    Immed = (Immed << 2);
+                    //Immed = (Immed << 2);
                     inst->immed = Immed;
-                    PC = PC + (Immed/4);
+                    PC = PC + Immed;
                 }
                 break;
             case 0x07:
@@ -255,9 +255,9 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
                     if (Immed & 0x00008000) {
                         Immed = Immed | 0xffff0000;
                     }
-                    Immed = (Immed << 2);
+                    //Immed = (Immed << 2);
                     inst->immed = Immed;
-                    PC = PC + (Immed/4);
+                    PC = PC + Immed;
                 }
                 break;
             case 0x06:
@@ -266,9 +266,9 @@ struct Instruction* Instruction_Decode(struct Instruction* inst){
                     if (Immed & 0x00008000) {
                         Immed = Immed | 0xffff0000;
                     }
-                    Immed = (Immed << 2);
+                    //Immed = (Immed << 2);
                     inst->immed = Immed;
-                    PC = PC  + (Immed/4);
+                    PC = PC + Immed;
                 }
                 break;
             default:
