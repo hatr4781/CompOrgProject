@@ -6,7 +6,8 @@
 #define COMPORGPROJECT_ID_H
 
 #include "main.h"
+#include "Hazard.h"
 
-struct Instruction* Instruction_Decode(struct Instruction* inst);
+void Instruction_Decode();
 
 #endif //COMPORGPROJECT_ID_H

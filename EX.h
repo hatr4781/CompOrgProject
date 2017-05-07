@@ -7,6 +7,6 @@
 
 #include "main.h"
 
-struct Instruction* Instruction_Execute(struct Instruction* inst);
+void Instruction_Execute();
 
 #endif //COMPORGPROJECT_EX_H

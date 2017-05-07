@@ -8,6 +8,6 @@
 
 #include "main.h"
 
-struct Instruction* Instruction_Fetch();
+void Instruction_Fetch();
 
 #endif //COMPORGPROJECT_IF_H

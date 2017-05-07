@@ -10,13 +10,16 @@
 #include "EX.h"
 #include "MEM.h"
 #include "WB.h"
+#include "clock_cycle.h"
 #include <stdio.h>
 //#include "Load_Program.h"
 
 #define MEM_LENGTH 1200
-#define R_INST 0
-#define I_INST 1
-#define J_INST 2
+
+#define R_TYPE 0
+#define STORE_TYPE 1
+#define LOAD_TYPE 2
+#define BR_TYPE 3
 
 /*
 #define SP reg[29]
@@ -24,6 +27,7 @@
 */
 
 #include <stdint.h>
+//#include <rpcndr.h>
 
 typedef int8_t SIGNED_BYTE;
 typedef uint8_t UNSIGNED_BYTE;
@@ -37,7 +41,11 @@ typedef uint32_t UNSIGNED_WORD;
 int32_t reg[32];
 uint32_t memory[MEM_LENGTH];
 
-int32_t PC;
+//int32_t PC;
+//int32_t bubbled_s;
+//int32_t bubbled_b;d
+
+int branched = 0;
 
 /*
 struct Instruction* Instruction_Fetch();
@@ -56,29 +64,62 @@ struct Instruction{
     int32_t rt_val;
     int32_t immed;
     uint8_t shamt;
-    uint32_t addr;
+    int32_t addr;
 //    uint32_t mem_address;
 
     int instruction_type;
+    int type;
 };
 
 /*
-typedef struct {
-    Instruction* ID;
-    Instruction* IF;
-    Instruction* EX;
-    Instruction* MEM;
-    Instruction* WB;
-} Shadow;
+struct Shadow{
+    struct Instruction* ID;
+    struct Instruction* IF;
+    struct Instruction* EX;
+    struct Instruction* MEM;
+    struct Instruction* WB;
+};
 */
 
+struct PIPE_FD{
+    int32_t PC;
+    uint32_t inst_fetched;
+};
 
-/*
-struct Instruction* IF_inst;
-struct Instruction* ID_inst;
-struct Instruction* _inst;
-struct Instruction*
-*/
+struct PIPE_DE{
+    int32_t RegRs;
+    int32_t RegRt;
+    int32_t RegRd;
+    int32_t Immed;
+    int32_t ReadData1;
+    int32_t ReadData2;
+    char* name;
 
+};
+
+struct PIPE_EM{
+    int32_t RegDst;
+    int32_t Immed;
+    int32_t RegRt;
+    int32_t ReadData2;
+    int32_t ALURes;
+    char* name;
+};
+
+struct PIPE_MW{
+    int32_t ALURes_DataAddr;
+    int32_t Mem_Data_Read;
+    int32_t RegDst;
+    char* name;
+};
+
+struct PIPE_FD* FD;
+struct PIPE_FD* shFD;
+struct PIPE_DE* DE;
+struct PIPE_DE* shDE;
+struct PIPE_EM* EM;
+struct PIPE_EM* shEM;
+struct PIPE_MW* MW;
+struct PIPE_MW* shMW;
 
 #endif //PROJECT_MAIN_H

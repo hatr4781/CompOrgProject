@@ -6,6 +6,6 @@
 #define COMPORGPROJECT_WB_H
 #include "main.h"
 
-void Instruction_WriteBack(struct Instruction* inst);
+void Instruction_WriteBack();
 
 #endif //COMPORGPROJECT_WB_H

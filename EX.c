@@ -1,162 +1,167 @@
 #include "EX.h"
 #include "string.h"
 
-struct Instruction* Instruction_Execute(struct Instruction* inst)
+void Instruction_Execute()
 {
-    if(!strcmp(inst->name, "NOP")) {
-        return inst;
+    if(EX_inst == NULL){
+        return;
     }
 
-    else if(!strcmp(inst->name, "ADD")) {
-        inst->rd_val = (inst->rs_val) + (inst->rt_val);
+    if(!strcmp(EX_inst->name, "NOP")) {
+        return;
     }
 
-    else if(!strcmp(inst->name, "ADDI")) {
-        inst->rt_val = (inst->rs_val) + (inst->immed);
+    else if(!strcmp(EX_inst->name, "ADD")) {
+        EX_inst->rd_val = (EX_inst->rs_val) + (EX_inst->rt_val);
     }
 
-    else if(!strcmp(inst->name, "ADDIU")) {
-        inst->rt_val = (inst->rs_val) + (inst->immed);
+    else if(!strcmp(EX_inst->name, "ADDI")) {
+        EX_inst->rt_val = (EX_inst->rs_val) + (EX_inst->immed);
     }
 
-    else if(!strcmp(inst->name, "ADDU")) {
-        inst->rd_val = inst->rs_val + inst->rt_val;
+    else if(!strcmp(EX_inst->name, "ADDIU")) {
+        EX_inst->rt_val = (EX_inst->rs_val) + (EX_inst->immed);
     }
 
-    else if(!strcmp(inst->name, "SUB")) {
-        inst->rd_val = (inst->rs_val) - (inst->rt_val);
+    else if(!strcmp(EX_inst->name, "ADDU")) {
+        EX_inst->rd_val = EX_inst->rs_val + EX_inst->rt_val;
     }
 
-    else if(!strcmp(inst->name, "SUBU")) {
-        inst->rd_val = (inst->rs_val) - (inst->rt_val);
+    else if(!strcmp(EX_inst->name, "SUB")) {
+        EX_inst->rd_val = (EX_inst->rs_val) - (EX_inst->rt_val);
     }
 
-    else if(!strcmp(inst->name, "AND")) {
-        inst->rd_val = (inst->rs_val) & (inst->rt_val);
+    else if(!strcmp(EX_inst->name, "SUBU")) {
+        EX_inst->rd_val = (EX_inst->rs_val) - (EX_inst->rt_val);
     }
 
-    else if(!strcmp(inst->name, "ANDI")) {
-        inst->rt_val = (inst->rs_val) & (inst->immed);
+    else if(!strcmp(EX_inst->name, "AND")) {
+        EX_inst->rd_val = (EX_inst->rs_val) & (EX_inst->rt_val);
     }
 
-    else if(!strcmp(inst->name, "OR")) {
-        inst->rd_val = (inst->rs_val) | (inst->rt_val);
+    else if(!strcmp(EX_inst->name, "ANDI")) {
+        EX_inst->rt_val = (EX_inst->rs_val) & (EX_inst->immed);
     }
 
-    else if(!strcmp(inst->name, "ORI")) {
-        inst->rt_val = (inst->rs_val)|(inst->immed);
+    else if(!strcmp(EX_inst->name, "OR")) {
+        EX_inst->rd_val = (EX_inst->rs_val) | (EX_inst->rt_val);
     }
 
-    else if(!strcmp(inst->name, "SLT")) {
-        inst->rd_val = ((inst->rs_val)<(inst->rt_val))?1:0;
+    else if(!strcmp(EX_inst->name, "ORI")) {
+        EX_inst->rt_val = (EX_inst->rs_val)|(EX_inst->immed);
     }
 
-    else if(!strcmp(inst->name, "SLTI")) {
-        inst->rt_val =((inst->rs_val)<(inst->immed))?1:0;
+    else if(!strcmp(EX_inst->name, "SLT")) {
+        EX_inst->rd_val = ((EX_inst->rs_val)<(EX_inst->rt_val))?1:0;
     }
 
-    else if(!strcmp(inst->name, "SLTIU")) {
-        inst->rt_val =((inst->rs_val)<(inst->immed))?1:0;
+    else if(!strcmp(EX_inst->name, "SLTI")) {
+        EX_inst->rt_val =((EX_inst->rs_val)<(EX_inst->immed))?1:0;
     }
 
-    else if(!strcmp(inst->name, "SLTU")) {
-        inst->rd_val = ((inst->rs_val)<(inst->rt_val))?1:0;
+    else if(!strcmp(EX_inst->name, "SLTIU")) {
+        EX_inst->rt_val =((EX_inst->rs_val)<(EX_inst->immed))?1:0;
     }
 
-    else if(!strcmp(inst->name, "XOR")) {
-        inst->rd_val = ((inst->rs_val)^(inst->rt_val));
+    else if(!strcmp(EX_inst->name, "SLTU")) {
+        EX_inst->rd_val = ((EX_inst->rs_val)<(EX_inst->rt_val))?1:0;
     }
 
-    else if(!strcmp(inst->name, "XORI")) {
-        inst->rt_val = (inst->rs_val)^(inst->immed);
+    else if(!strcmp(EX_inst->name, "XOR")) {
+        EX_inst->rd_val = ((EX_inst->rs_val)^(EX_inst->rt_val));
     }
 
-    else if(!strcmp(inst->name, "NOR")) {
-        inst->rd_val = ~((inst->rs_val)|(inst->rt_val));
+    else if(!strcmp(EX_inst->name, "XORI")) {
+        EX_inst->rt_val = (EX_inst->rs_val)^(EX_inst->immed);
     }
 
-    else if(!strcmp(inst->name, "JR")) {
-        PC = inst->rs_val;
+    else if(!strcmp(EX_inst->name, "NOR")) {
+        EX_inst->rd_val = ~((EX_inst->rs_val)|(EX_inst->rt_val));
     }
 
-    else if(!strcmp(inst->name, "MOVZ")) {
-        if(inst->rt_val == 0) {
-            inst->rd_val = inst->rs_val;
+    else if(!strcmp(EX_inst->name, "JR")) {
+        PC = EX_inst->rs_val;
+    }
+
+    else if(!strcmp(EX_inst->name, "MOVZ")) {
+        if(EX_inst->rt_val == 0) {
+            EX_inst->rd_val = EX_inst->rs_val;
         }
     }
 
-    else if(!strcmp(inst->name, "MOVN")) {
-        if(inst->rt_val != 0) {
-            inst->rd_val = inst->rs_val;
+    else if(!strcmp(EX_inst->name, "MOVN")) {
+        if(EX_inst->rt_val != 0) {
+            EX_inst->rd_val = EX_inst->rs_val;
         }
     }
 
-    else if(!strcmp(inst->name, "SLL")) {
-        inst->rd_val = inst->rt_val << inst->shamt;
+    else if(!strcmp(EX_inst->name, "SLL")) {
+        EX_inst->rd_val = EX_inst->rt_val << EX_inst->shamt;
     }
 
-    else if(!strcmp(inst->name, "SRL")) {
-        inst->rd_val = inst->rt_val >> inst->shamt;
+    else if(!strcmp(EX_inst->name, "SRL")) {
+        EX_inst->rd_val = EX_inst->rt_val >> EX_inst->shamt;
     }
 
-    else if(!strcmp(inst->name, "J")) {
-        PC = inst->addr;
+    else if(!strcmp(EX_inst->name, "J")) {
+        PC = EX_inst->addr;
     }
 
-    else if(!strcmp(inst->name, "JAL")) {
+    else if(!strcmp(EX_inst->name, "JAL")) {
         reg[31] = PC+2;
-        PC = inst->addr;
+        PC = EX_inst->addr;
     }
 
     //Memory Functions
-    else if(!strcmp(inst->name, "LB")) {
-        inst->addr = inst->rs_val+inst->immed;
+    else if(!strcmp(EX_inst->name, "LB")) {
+        EX_inst->addr = EX_inst->rs_val+EX_inst->immed;
     }
 
-    else if(!strcmp(inst->name, "LBU")) {
-        inst->addr = inst->rs_val+inst->immed;
+    else if(!strcmp(EX_inst->name, "LBU")) {
+        EX_inst->addr = EX_inst->rs_val+EX_inst->immed;
     }
 
-    else if(!strcmp(inst->name, "LHU")) {
-        inst->addr = inst->rs_val+inst->immed;
+    else if(!strcmp(EX_inst->name, "LHU")) {
+        EX_inst->addr = EX_inst->rs_val+EX_inst->immed;
     }
 
-    else if(!strcmp(inst->name, "LUI")) {
-        inst->addr = inst->immed;
+    else if(!strcmp(EX_inst->name, "LUI")) {
+        EX_inst->rt_val = (EX_inst->immed) << 16;
     }
 
-    else if(!strcmp(inst->name, "LW")) {
-        inst->addr = inst->rs_val+inst->immed;
+    else if(!strcmp(EX_inst->name, "LW")) {
+        EX_inst->addr = EX_inst->rs_val+EX_inst->immed;
     }
 
-    else if(!strcmp(inst->name, "SB")) {
-        inst->addr = inst->rs_val+inst->immed;
+    else if(!strcmp(EX_inst->name, "SB")) {
+        EX_inst->addr = EX_inst->rs_val+EX_inst->immed;
     }
 
-    else if(!strcmp(inst->name, "SH")) {
-        inst->addr = inst->rs_val+inst->immed;
+    else if(!strcmp(EX_inst->name, "SH")) {
+        EX_inst->addr = EX_inst->rs_val+EX_inst->immed;
     }
 
-    else if(!strcmp(inst->name, "SW")) {
-        inst->addr = inst->rs_val+inst->immed;
+    else if(!strcmp(EX_inst->name, "SW")) {
+        EX_inst->addr = EX_inst->rs_val+EX_inst->immed;
     }
 
-    else if(!strcmp(inst->name, "BEQ")) {
+    else if(!strcmp(EX_inst->name, "BEQ")) {
 
     }
 
-    else if(!strcmp(inst->name, "BNE")) {
+    else if(!strcmp(EX_inst->name, "BNE")) {
     }
 
-    else if(!strcmp(inst->name, "BGTZ")) {
+    else if(!strcmp(EX_inst->name, "BGTZ")) {
     }
 
-    else if(!strcmp(inst->name, "BLEZ")) {
+    else if(!strcmp(EX_inst->name, "BLEZ")) {
     }
     else{
         printf("Instruction Execute Error");
     }
-
-    return inst;
+    printf("EXECUTE: %s \nrs_val = %d\nrt_val = %d\nrd_val = %d\nimmed = %d\naddr = %d\n",
+           EX_inst->name, EX_inst->rs_val, EX_inst->rt_val, EX_inst->rd_val, EX_inst->immed, EX_inst->addr);
+    return;
 
 }

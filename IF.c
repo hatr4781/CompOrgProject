@@ -4,12 +4,16 @@
 
 
 //fetch next instruction and set instruction struct to it
-struct Instruction* Instruction_Fetch(){
-    uint32_t inst_fetched;
-    inst_fetched = memory[PC];
-    struct Instruction *new_inst;
-    new_inst = malloc(sizeof(struct Instruction));
-    new_inst->encoded_inst = inst_fetched;
-    PC = PC + 1;
-    return new_inst;
+void Instruction_Fetch(){
+
+    if(branched){
+
+    }
+
+    shFD->inst_fetched = memory[shFD->PC];
+
+    printf("PC = %d\n FETCHED INSTRUCTION: %8x\n", shFD->PC, shFD->inst_fetched);
+    shFD->PC = shFD->PC + 1;
+
+    return;
 }
