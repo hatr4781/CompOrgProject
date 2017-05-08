@@ -16,8 +16,8 @@ void make_nop(){
 
 void Instruction_Decode(){
 
-    uint8_t opcode;
-    uint8_t func;
+    uint32_t opcode;
+    uint32_t func;
     int32_t rs;
     int32_t rs_val;
     int32_t rt;
@@ -26,23 +26,33 @@ void Instruction_Decode(){
     int32_t rd_val;
     int32_t shamt;
     int32_t immed;
-    int32_t type;
 
     opcode = (FD->inst_fetched) >> 26;
     func = 0x0000003f & FD->inst_fetched;
-    rs = ((FD->inst_fetched) >> 21) & 0x001f;
-    rt = ((FD->inst_fetched) >> 16) & 0x001f;
-    rd = ((FD->inst_fetched) >> 11) & 0x001f;
+    shDE->RegRs = ((FD->inst_fetched) >> 21) & 0x001f;
+    shDE->RegRt = ((FD->inst_fetched) >> 16) & 0x001f;
+    shDE->RegRd = ((FD->inst_fetched) >> 11) & 0x001f;
+    shDE->Immed = 0x0000ffff & FD->inst_fetched;
     shamt = ((FD->inst_fetched) >> 6) & 0x001f;
-    immed = 0x0000ffff & FD->inst_fetched;
+    shDE->target_branch = 0;
+    shDE->ReadData1 = 0;
+    shDE->ReadData2 = 0;
 
     //printf("opcode = %d = %8x\n", opcode, opcode);
     if(FD->inst_fetched == 0x00000000){
+        shDE->type = 0;
         shDE->name = "NOP";
+        shDE->RegRt = 0;
+        shDE->RegRd = 0;
+        shDE->Immed = 0;
+        shDE->ReadData1 = 0;
+        shDE->ReadData2 = 0;
     }
 
     else if(opcode == 0x00) {
-        type = R_TYPE;
+        shDE->type = R_TYPE;
+        shDE->ReadData1 = reg[shDE->RegRs];
+        shDE->ReadData2 = reg[shDE->RegRt];
         //decode as R_inst
         switch(func){
             case 0x20:
@@ -58,7 +68,12 @@ void Instruction_Decode(){
                 break;
 
             case 0x08:
+                shDE->type = BR_TYPE;
                 shDE->name = "JR";
+                shDE->ReadData2 = 0;
+                shDE->RegRt = 0;
+                shDE->RegRd = 0;
+                shDE->target_branch = shDE->ReadData1;
                 //treat as branch or r-type?
                 //PC = (ID_inst->rs_val)/4;
                 break;
@@ -89,10 +104,12 @@ void Instruction_Decode(){
 
             case 0x00:
                 shDE->name = "SLL";
+                shDE->ReadData1 = shamt;
                 break;
 
             case 0x02:
                 shDE->name = "SRL";
+                shDE->ReadData1 = shamt;
                 break;
 
             case 0x22:
@@ -114,369 +131,202 @@ void Instruction_Decode(){
     }
 
     else if(opcode == 0x01){
-        type = BR_TYPE;
-
+        shDE->ReadData1 = reg[shDE->RegRs];
+        shDE->ReadData2 = 0;
+        shDE->RegRt = 0;
+        shDE->type = BR_TYPE;
         shDE->name = "BLTZ";
-        shDE->Immed = immed << 2;
-        ID_inst->rs_val = reg[Rs];
-
+        if((shDE->Immed) & 0x00008000){
+            shDE->Immed = shDE->Immed | 0xffff0000;
+        }
+        shDE->target_branch = shDE->Immed;
     }
 
     else if(opcode < 0x04 ){
-        ID_inst->instruction_type = J_INST;
-
-        uint32_t Addr;
-        Addr = (ID_inst->encoded_inst) & 0x03ffffff;
-
-        //format jump address
-        //Addr = (Addr << 2) ;
-        ID_inst->addr = Addr;
-
+        //type = BR_TYPE;
+        shDE->type = -1;
+        shDE->target_branch = shDE->Immed;
         switch(opcode){
             case 0x02:
-                ID_inst->name = "J";
-                PC = (ID_inst->addr);
+                shDE->name = "J";
+                shFD->PC = shDE->target_branch;
                 break;
+
             case 0x03:
-                ID_inst->name = "JAL";
-                reg[31] = PC + 1;
-                PC = (ID_inst->addr);
+                shDE->name = "JAL";
+                reg[31] = shFD->PC + 1;
+                shFD->PC = shDE->target_branch;
+                printf("JAL-> PC = %d", shFD->PC);
                 break;
+
             default:
-                ID_inst->name = "ERR";
+                shDE->name = "ERR";
                 break;
         }
     }
 
     else {
-        ID_inst->instruction_type = I_INST;
-
-        Immed = 0x0000ffff & ID_inst->encoded_inst;
-        Rs = ((ID_inst->encoded_inst) >> 21) & 0x001f;
-        Rt = ((ID_inst->encoded_inst) >> 16) & 0x001f;
-
-        ID_inst->rt = Rt;
-        ID_inst->rs = Rs;
-
-        ID_inst->rs_val = reg[Rs];
-        ID_inst->rt_val = reg[Rt];
-        //ID_inst->immed = Immed;
-
+        shDE->ReadData1 = reg[shDE->RegRs];
+        shDE->ReadData2 = reg[shDE->RegRt];
         switch (opcode) {
             case 0x20:
-                ID_inst->name = "LB";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
-                }
-                ID_inst->immed = Immed;
-                ID_inst->type = LOAD_TYPE;
+                shDE->type = LOAD_TYPE;
+                shDE->name = "LB";
 
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
+                }
                 break;
+
             case 0x24:
-                ID_inst->name = "LBU";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
-                }
-                ID_inst->immed = Immed;
-                ID_inst->type = LOAD_TYPE;
+                shDE->type = LOAD_TYPE;
+                shDE->name = "LBU";
 
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
+                }
                 break;
-            case 0x25:
-                ID_inst->name = "LHU";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
-                }
-                ID_inst->type = LOAD_TYPE;
 
+            case 0x25:
+                shDE->type = LOAD_TYPE;
+                shDE->name = "LHU";
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
+                }
                 break;
             case 0x0f:
-                ID_inst->name = "LUI";
-                Immed = (Immed << 16) & 0xffff0000;
-                ID_inst->type = LOAD_TYPE;
-
+                shDE->type = I_TYPE;
+                shDE->name = "LUI";
+                shDE->Immed = (shDE->Immed << 16) & 0xffff0000;
                 break;
             case 0x23:
-                ID_inst->name = "LW";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
+                shDE->type = LOAD_TYPE;
+                shDE->name = "LW";
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
                 }
-                ID_inst->type = LOAD_TYPE;
-
                 break;
+
             case 0x0d:
-                ID_inst->name = "ORI";
-                ID_inst->type = ALU_TYPE;
-
+                shDE->type = I_TYPE;
+                shDE->name = "ORI";
                 break;
+
             case 0x0a:
-                ID_inst->name = "SLTI";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
+                shDE->type = I_TYPE;
+                shDE->name = "SLTI";
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
                 }
-                ID_inst->type = ALU_TYPE;
-
                 break;
+
             case 0x0b:
-                ID_inst->name = "SLTIU";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
+                shDE->type = I_TYPE;
+                shDE->name = "SLTIU";
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
                 }
-                ID_inst->type = ALU_TYPE;
                 break;
+
             case 0x28:
-                ID_inst->name = "SB";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
+                shDE->type = STORE_TYPE;
+                shDE->name = "SB";
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
                 }
-                ID_inst->type = STORE_TYPE;
-
                 break;
+
             case 0x29:
-                ID_inst->name = "SH";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
+                shDE->type = STORE_TYPE;
+                shDE->name = "SH";
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed| 0xffff0000;
                 }
-                ID_inst->type = STORE_TYPE;
-
                 break;
+
             case 0x2b:
-                ID_inst->name = "SW";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
+                shDE->type = STORE_TYPE;
+                shDE->name = "SW";
+                if (shDE->Immed& 0x00008000) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
                 }
-                ID_inst->type = STORE_TYPE;
-
                 break;
+
             case 0x08:
-                ID_inst->name = "ADDI";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
+                shDE->type = I_TYPE;
+                shDE->name = "ADDI";
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed| 0xffff0000;
                 }
-                ID_inst->type = ALU_TYPE;
-
                 break;
+
             case 0x09:
-                ID_inst->name = "ADDIU";
-                if (Immed & 0x00008000) {
-                    Immed = Immed | 0xffff0000;
+                shDE->type = I_TYPE;
+                shDE->name = "ADDIU";
+                if (shDE->Immed & 0x00008000) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
                 }
-                ID_inst->type = ALU_TYPE;
-
                 break;
+
             case 0x0c:
-                ID_inst->name = "ANDI";
-                ID_inst->type = ALU_TYPE;
-
+                shDE->type = I_TYPE;
+                shDE->name = "ANDI";
                 break;
+
             case 0x0e:
-                ID_inst->name = "XORI";
-                ID_inst->type = ALU_TYPE;
-
+                shDE->type = I_TYPE;
+                shDE->name = "XORI";
                 break;
+
             case 0x04:
-                ID_inst->name = "BEQ";
-                ID_inst->type = ALU_TYPE;
+                shDE->type = BR_TYPE;
+                shDE->name = "BEQ";
+                if (shDE->Immed & 0x0000800) {
+                    shDE->Immed = shDE->Immed | 0xffff0000;
+                }
+                shDE->target_branch = shDE->Immed;
                 break;
+
             case 0x05:
-                ID_inst->name = "BNE";
-                ID_inst->type = ALU_TYPE;
+                shDE->name = "BNE";
+                shDE->type = BR_TYPE;
+                if((shDE->Immed) & 0x00008000){
+                    shDE->Immed = shDE->Immed | 0xffff0000;
+                }
+                shDE->target_branch = shDE->Immed;
                 break;
+
             case 0x07:
-                ID_inst->name = "BGTZ";
-                ID_inst->type = ALU_TYPE;
+                shDE->name = "BGTZ";
+                shDE->type = BR_TYPE;
+                shDE->RegRt = 0;
+                shDE->ReadData2 = 0;
+                if((shDE->Immed) & 0x00008000){
+                    shDE->Immed = shDE->Immed | 0xffff0000;
+                }
+                shDE->target_branch = shDE->Immed;
                 break;
+
             case 0x06:
-                ID_inst->name = "BLEZ";
-                ID_inst->type = ALU_TYPE;
+                shDE->name = "BLEZ";
+                shDE->type = BR_TYPE;
+                shDE->ReadData2 = 0;
+                shDE->RegRt = 0;
+                if((shDE->Immed) & 0x00008000){
+                    shDE->Immed = shDE->Immed | 0xffff0000;
+                }
+                shDE->target_branch = shDE->Immed;
                 break;
+
             default:
-                ID_inst->name = "ERR";
+                shDE->name = "ERR";
                 break;
         }
-        ID_inst->immed = Immed;
     }
-    if((EX_inst || MEM_inst) == NULL){
-        return;
-    }
-
     /*
-    if(!strcmp("SW", ID_inst->name)&& (bubbled_s == 1)){
-        bubbled_s = 0;
-        ID_inst->rt_val = reg[ID_inst->rt];
-        return;
-    }
-*/
-    /*
-    if(!strcmp("BNE", ID_inst->name) && (bubbled_b == 1)){
-        bubbled_b = 0;
-        ID_inst->rt_val = reg[ID_inst->rt];
-    }
-    */
-    else{
-        Hazard_Forwarding();
-    }
-
-    if(!strcmp(ID_inst->name, "BEQ")){
-        if (ID_inst->rs_val == ID_inst->rt_val) {
-            if (Immed & 0x00008000) {
-                Immed = Immed | 0xffff0000;
-            }
-            Immed = (Immed << 2);
-            ID_inst->immed = Immed;
-
-            PC = PC + Immed -1;
-        }
-    }
-
-    if(!strcmp(ID_inst->name, "BNE")){
-        if (ID_inst->rs_val != ID_inst->rt_val) {
-            if (Immed & 0x00008000) {
-                Immed = Immed | 0xffff0000;
-            }
-            //Immed = (Immed << 2);
-            ID_inst->immed = Immed;
-            PC = PC + Immed -1;
-        }
-    }
-
-    if(!strcmp(ID_inst->name, "BGTZ")){
-        if (ID_inst->rs_val > 0) {
-            if (Immed & 0x00008000) {
-                Immed = Immed | 0xffff0000;
-            }
-            //Immed = (Immed << 2);
-            ID_inst->immed = Immed;
-            PC = PC + Immed -1;
-        }
-    }
-
-    if(!strcmp(ID_inst->name, "BLTZ")){
-        if(ID_inst->rs_val < 0){
-            if (Immed & 0x00008000) {
-                Immed = Immed | 0xffff0000;
-            }
-            //Immed = (Immed << 2);
-            ID_inst->immed = Immed;
-            PC = PC + Immed;
-        }
-    }
-
-    if(!strcmp(ID_inst->name, "BLEZ")){
-        if (ID_inst->rs_val <= 0) {
-            if (Immed & 0x00008000) {
-                Immed = Immed | 0xffff0000;
-            }
-            //Immed = (Immed << 2);
-            ID_inst->immed = Immed;
-            PC = PC + Immed -1;
-        }
-    }
-    printf("DECODE: %s \nrs_val = %d\nrt_val = %d\nrd_val = %d\nimmed = %d\naddr = %d\n",
-           ID_inst->name, ID_inst->rs_val, ID_inst->rt_val, ID_inst->rd_val, ID_inst->immed, ID_inst->addr);
-
+    printf("DECODE: %s \nReadData1 = %d\nReadData2 = %d\nRs = %d\nRd = %d\nRt = %d\nImmed = %d\n",
+           shDE->name, shDE->ReadData1, shDE->ReadData2, shDE->RegRs, shDE->RegRd, shDE->RegRt, shDE->Immed);
+           */
 }
-/*  NEED TO INCLUDE SOMEWHERE
-    else if(opcode == 0x01f){
-        ID_inst->instruction_type = R_INST;
 
-        func = 0x0000003f & ID_inst->encoded_inst;
-        Rs = ((ID_inst->encoded_inst) >> 21) & 0x001f;
-        Rt = ((ID_inst->encoded_inst) >> 16) & 0x001f;
-        Rd = ((ID_inst->encoded_inst) >> 11) & 0x001f;
-        Shamt = ((ID_inst->encoded_inst) >> 6) & 0x001f;
 
-        ID_inst->rs = Rs;
-        ID_inst->rt = Rt;
-        ID_inst->rd = Rd;
-
-        ID_inst->name = "SEB";
-        ID_inst->rs_val = Rs;
-        ID_inst->rt_val = Rt;
-    }
-*/
-/*
-*/
-/*
-    int x_type;
-    int m_type;
-    if(EX_inst == NULL){
-        return;
-    }
-    else{
-        x_type = EX_inst->instruction_type;
-    }
-
-    if(MEM_inst != NULL) {
-        m_type = MEM_inst->instruction_type;
-    }
-    /*
-    if(ID_inst->name == "NOP"){
-        return;
-    }
-*/
-/*
-    if(ID_inst->instruction_type == I_INST){
-        if(m_type == I_INST ){
-            if(ID_inst->rs == MEM_inst->rt){
-                printf("ID->rs = MEM->rt\n");
-                make_nop();
-                //PC = PC - 1;
-            }
-        }
-        else if(m_type == R_INST){
-            if(ID_inst->rs == MEM_inst->rd){
-                printf("ID->rs = MEM->rd\n");
-                make_nop();
-                //PC = PC - 1;
-            }
-        }
-        else if(x_type == I_INST ){
-            if(ID_inst->rs == EX_inst->rt){
-                //make_nop();
-                printf("ID->rs = EX->rt\n");
-                make_nop();
-                //PC = PC - 1;
-            }
-        }
-        else if(x_type == R_INST){
-            if(ID_inst->rs == EX_inst->rd){
-                printf("ID->rs = EX->rd\n");
-                make_nop();
-                //PC = PC - 1;
-            }
-        }
-        printf("MAKENOP:  %s \nrs_val = %d\nrt_val = %d\nrd_val = %d\nimmed = %d\naddr = %d\n",
-               ID_inst->name, ID_inst->rs_val, ID_inst->rt_val, ID_inst->rd_val, ID_inst->immed, ID_inst->addr);
-    }
-    else if(ID_inst->instruction_type == R_INST){
-        if(m_type == I_INST ){
-            if((ID_inst->rs || ID_inst->rt)== MEM_inst->rt){
-                printf("ID->rs || ID->rt = MEM->rt\n");
-                make_nop();
-                //PC = PC - 1;
-            }
-        }
-        else if(m_type == R_INST){
-            if((ID_inst->rs|| ID_inst->rt) == MEM_inst->rd){
-                printf("ID->rs || ID->rt = MEM->rt\n");
-                make_nop();
-                //PC = PC - 1;
-            }
-        }
-        else if(x_type == I_INST ){
-            if((ID_inst->rs || ID_inst->rt) == EX_inst->rt){
-                printf("ID->rs || ID->rt = EX->rt\n");
-                make_nop();
-                //PC = PC - 1;
-            }
-        }
-        else if(x_type == R_INST)
-            if((ID_inst->rs || ID_inst->rt) == EX_inst->rd){
-                printf("ID->rs || ID->rt = EX->rd\n");
-                make_nop();
-                //PC = PC - 1;
-            }
-        }
-    */
-//        printf("MAKENOP: %s \nrs_val = %d\nrt_val = %d\nrd_val = %d\nimmed = %d\naddr = %d\n",
-//               ID_inst->name, ID_inst->rs_val, ID_inst->rt_val, ID_inst->rd_val, ID_inst->immed, ID_inst->addr);

@@ -17,9 +17,11 @@
 #define MEM_LENGTH 1200
 
 #define R_TYPE 0
-#define STORE_TYPE 1
-#define LOAD_TYPE 2
-#define BR_TYPE 3
+#define I_TYPE 1
+#define STORE_TYPE 2
+#define LOAD_TYPE 3
+#define BR_TYPE 4
+
 
 /*
 #define SP reg[29]
@@ -45,7 +47,10 @@ uint32_t memory[MEM_LENGTH];
 //int32_t bubbled_s;
 //int32_t bubbled_b;d
 
-int branched = 0;
+
+int32_t target_branch;
+int branched;
+int control_hazard;
 
 /*
 struct Instruction* Instruction_Fetch();
@@ -53,6 +58,7 @@ struct Instruction* Instruction_Decode(Instruction* inst);
 */
 
 void Initialize_Simulation_Memory();
+/*
 struct Instruction{
     char* name;
     uint32_t encoded_inst;
@@ -70,6 +76,7 @@ struct Instruction{
     int instruction_type;
     int type;
 };
+*/
 
 /*
 struct Shadow{
@@ -87,29 +94,31 @@ struct PIPE_FD{
 };
 
 struct PIPE_DE{
-    int32_t RegRs;
     int32_t RegRt;
     int32_t RegRd;
+    int32_t RegRs;
     int32_t Immed;
     int32_t ReadData1;
     int32_t ReadData2;
+    int32_t type;
+    int32_t target_branch;
     char* name;
-
 };
 
 struct PIPE_EM{
     int32_t RegDst;
-    int32_t Immed;
     int32_t RegRt;
     int32_t ReadData2;
     int32_t ALURes;
+    int32_t type;
     char* name;
 };
 
 struct PIPE_MW{
-    int32_t ALURes_DataAddr;
+    int32_t ALURes;
     int32_t Mem_Data_Read;
     int32_t RegDst;
+    int32_t type;
     char* name;
 };
 

@@ -3,32 +3,30 @@
 
 //Accessing memory for load/store instructions
 void Instruction_Memory(){
-
-    if(MEM_inst == NULL){
-        return;
-    }
-
 /*
     if(MEM_inst->name != ("LB"|| "LBU"|| "LHU"|| "LW"|| "SB"|| "SH"||"SW")){
         return;
     }
 */
     int32_t val = 0;
-    //int byte_offset;
     int mem_word;
     int32_t mem_address;
     int32_t temp = 0;
-
-    mem_address = MEM_inst->addr;
-    mem_word = mem_address / 4;
-    printf("Memory[%d] = %d\n", mem_word, memory[mem_word]);
     int offset;
 
-    if(!strcmp(MEM_inst->name, "LW")){
+    mem_address = EM->ALURes;
+    mem_word = mem_address/4;
+
+    shMW->name = EM->name;
+    shMW->RegDst = EM->RegDst;
+    shMW->type = EM->type;
+
+    if(!strcmp(EM->name, "LW")){
         val = memory[mem_word];
-        MEM_inst->rt_val = val;
+        shMW->Mem_Data_Read = val;
     }
-    else if(!strcmp(MEM_inst->name, "LB")){
+
+    else if(!strcmp(EM->name, "LB")){
         offset = mem_address % 4;
         if(offset == 0){
             val = BYTE_0 & memory[mem_word];
@@ -54,10 +52,10 @@ void Instruction_Memory(){
                 val = 0xffffff00 | val;
             }
         }
-        MEM_inst->rt_val = val;
+        shMW->Mem_Data_Read = val;
     }
 
-    else if(!strcmp(MEM_inst->name, "LBU")) {
+    else if(!strcmp(EM->name, "LBU")) {
         offset = mem_address % 4;
         if(offset == 0){
             val = BYTE_0 & memory[mem_word];
@@ -71,10 +69,10 @@ void Instruction_Memory(){
         else if(offset == 3){
             val = (BYTE_3 & memory[mem_word]) >> 24;
         }
-        MEM_inst->rt_val = val;
+        shMW->Mem_Data_Read = val;
     }
 
-    else if(!strcmp(MEM_inst->name, "LHU")){
+    else if(!strcmp(EM->name, "LHU")){
         offset = mem_word % 2;
         if(offset == 0){
             val = HALF_0 & memory[mem_word];
@@ -82,14 +80,13 @@ void Instruction_Memory(){
         else if(offset == 1){
             val = (HALF_1 & memory[mem_word]) >> 16;
         }
-        MEM_inst->rt_val = val;
+        shMW->Mem_Data_Read = val;
     }
 
-
-    else if(!strcmp(MEM_inst->name, "SB")){
+    else if(!strcmp(EM->name, "SB")){
         offset = mem_word % 4;
         //take least significant byte of rt
-        val = BYTE_0 & MEM_inst->rt_val;
+        val = BYTE_0 & EM->ReadData2;
         //zero out byte in memory to be replaced
         if (offset == 0){
             temp = 0xffffff00 & memory[mem_word];
@@ -109,9 +106,9 @@ void Instruction_Memory(){
         memory[mem_word] = temp | val;
     }
 
-    else if(!strcmp(MEM_inst->name, "SH")){
+    else if(!strcmp(EM->name, "SH")){
         offset = mem_word % 2;
-        val = HALF_0 & MEM_inst->rt_val;
+        val = HALF_0 & EM->ReadData2;
         if(offset == 0){
             temp = 0xffff0000 & memory[mem_word];
         }
@@ -121,11 +118,18 @@ void Instruction_Memory(){
         }
         memory[mem_word] = temp | val;
     }
-    else if(!strcmp(MEM_inst->name, "SW")){
-        memory[mem_word] = MEM_inst->rt_val;
+
+    else if(!strcmp(EM->name, "SW")){
+        memory[mem_word] = EM->ReadData2;
     }
-    printf("Memory[%d] = %d\n", mem_word, memory[mem_word]);
-    printf("MEM_STAGE: %s \nrs_val = %d\nrt_val = %d\nrd_val = %d\nimmed = %d\naddr = %d\n",
-           MEM_inst->name, MEM_inst->rs_val, MEM_inst->rt_val, MEM_inst->rd_val, MEM_inst->immed, MEM_inst->addr);
+
+    else{
+        shMW->ALURes = EM->ALURes;
+        shMW->Mem_Data_Read = 0;
+    }
+
+    //printf("Memory[%d] = %d\n", mem_word, memory[mem_word]);
+   // printf("MEM_STAGE: %s \nALURes = %d\nMem_Data_Read = %d\nRegDst = %d,",
+   //     shMW->name, shMW->ALURes, shMW->Mem_Data_Read, shMW->RegDst);
     return;
 }

@@ -7,110 +7,106 @@
 #include "string.h"
 void Instruction_WriteBack()
 {
-    if(WB_inst == NULL){
-        return;
-    }
-    if(!strcmp(WB_inst->name, "NOP")) {
+    if(!strcmp(MW->name, "NOP")) {
         return;
     }
 
-    else if(!strcmp(WB_inst->name, "ADD")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "ADD")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "ADDI")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "ADDI")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
 
-    else if(!strcmp(WB_inst->name, "ADDIU")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "ADDIU")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "ADDU")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "ADDU")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
-    else if(!strcmp(WB_inst->name, "SUB")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
-    }
-
-    else if(!strcmp(WB_inst->name, "SUBU")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "SUB")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "AND")) {
-        reg[WB_inst->rd_val] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "SUBU")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "ANDI")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "AND")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "OR")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "ANDI")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "ORI")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "OR")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "SLT")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "ORI")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "SLTI")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "SLT")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "SLTIU")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "SLTI")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "SLTU")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "SLTIU")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "XOR")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "SLTU")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "XORI")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "XOR")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "NOR")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "XORI")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "MOVZ")) {
-            reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "NOR")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "MOVN")) {
-            reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "MOVZ")) {
+            reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "SLL")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "MOVN")) {
+            reg[MW->RegDst] = MW->ALURes;
     }
 
-    else if(!strcmp(WB_inst->name, "SRL")) {
-        reg[WB_inst->rd] = WB_inst->rd_val;
+    else if(!strcmp(MW->name, "SLL")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
-    else if(!strcmp(WB_inst->name, "LW")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+
+    else if(!strcmp(MW->name, "SRL")) {
+        reg[MW->RegDst] = MW->ALURes;
     }
-    else if(!strcmp(WB_inst->name, "LB")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "LW")) {
+        reg[MW->RegDst] = MW->Mem_Data_Read;
     }
-    else if(!strcmp(WB_inst->name, "LBU")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "LB")) {
+        reg[MW->RegDst] = MW->Mem_Data_Read;
     }
-    else if(!strcmp(WB_inst->name, "LHU")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "LBU")) {
+        reg[MW->RegDst] = MW->Mem_Data_Read;
     }
-    else if(!strcmp(WB_inst->name, "LUI")) {
-        reg[WB_inst->rt] = WB_inst->rt_val;
+    else if(!strcmp(MW->name, "LHU")) {
+        reg[MW->RegDst] = MW->Mem_Data_Read;
     }
-    free(WB_inst);
+    else if(!strcmp(MW->name, "LUI")) {
+        reg[MW->RegDst] = MW->Mem_Data_Read;
+    }
 };

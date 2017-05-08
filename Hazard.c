@@ -5,6 +5,7 @@
 #include <mem.h>
 #include "Hazard.h"
 
+/*
 void makeIDtoNOP(){
     ID_inst->rt_val = 0;
     ID_inst->rt = 0;
@@ -16,186 +17,147 @@ void makeIDtoNOP(){
     ID_inst->shamt = 0;
     ID_inst->name = "NOP";
 }
+*/
 
 void Hazard_Forwarding(){
 
-    if(ID_inst->encoded_inst == EX_inst->encoded_inst){
-        return;
-    }
+    switch(shDE->type) {
+        case R_TYPE | STORE_TYPE:
+            if ((shDE->RegRs == shMW->RegDst) && (shMW->RegDst != 0) && (shDE->RegRs != 0)) {
+                if (shMW->type == LOAD_TYPE) {
+                    shDE->ReadData1 = shMW->Mem_Data_Read;
+                }
+                shDE->ReadData1 = shMW->ALURes;
+            }
+            if ((shDE->RegRt == shMW->RegDst) && (shMW->RegDst != 0) && (shDE->RegRt != 0)) {
+                if (shMW->type == LOAD_TYPE) {
+                    shDE->ReadData2 = shMW->Mem_Data_Read;
+                }
+                shDE->ReadData2 = shMW->ALURes;
+            }
 
-    if(ID_inst->encoded_inst == MEM_inst->encoded_inst){
-        return;
-    }
-
-    switch(ID_inst->type) {
-        case ALU_TYPE:
-            if (ID_inst->instruction_type == R_INST) {
-                //check load/R
-                if ((EX_inst->type == LOAD_TYPE) || (MEM_inst->type == LOAD_TYPE)) {
-                    if (EX_inst->type == LOAD_TYPE) {
-                        if (EX_inst->rt == ID_inst->rs || ID_inst->rt) {
-                            PC = PC - 2; //insert nop
-                            IF_inst->encoded_inst = 0x00000000;
-                            makeIDtoNOP();
-                        }
-                    } else if (MEM_inst->type == LOAD_TYPE) {
-                        if (MEM_inst->rt == (ID_inst->rs || ID_inst->rt)) {
-                            if (MEM_inst->rt == ID_inst->rs) {
-                                ID_inst->rs_val = MEM_inst->rt_val;
-                            }
-                            if (MEM_inst->rt == ID_inst->rt) {
-                                ID_inst->rt_val = MEM_inst->rt_val;
-                            }
-                        }
-                    }
+            if ((shDE->RegRs == shEM->RegDst) && (shEM->RegDst != 0) && (shDE->RegRs != 0)) {
+                if (shEM->type == LOAD_TYPE) {
+                    shFD->inst_fetched = 0x00000000;
+                    shFD->PC = shFD->PC - 2;
+                    return;
                 }
-                //check R-R
-                if ((EX_inst->instruction_type == R_INST) || (MEM_inst->instruction_type == R_INST)) {
-                    if (EX_inst->rd == ID_inst->rs) {
-                        ID_inst->rs_val = EX_inst->rd_val;
-                    } else if (MEM_inst->rd == ID_inst->rs) {
-                        ID_inst->rs_val = MEM_inst->rd_val;
-                    }
-                    if (EX_inst->rd == ID_inst->rt) {
-                        ID_inst->rt_val = EX_inst->rd_val;
-                    } else if (MEM_inst->rd == ID_inst->rt) {
-                        ID_inst->rt_val = MEM_inst->rd_val;
-                    }
-                }
-                //check I-R
-                if ((EX_inst->instruction_type == I_INST) || (MEM_inst->instruction_type == I_INST)) {
-                    if (EX_inst->rt == ID_inst->rs) {
-                        ID_inst->rs_val = EX_inst->rt_val;
-                    } else if (MEM_inst->rt == ID_inst->rs) {
-                        ID_inst->rs_val = MEM_inst->rt_val;
-                    }
-                    if (EX_inst->rt == ID_inst->rt) {
-                        ID_inst->rt_val = EX_inst->rt_val;
-                    } else if (MEM_inst->rt == ID_inst->rt) {
-                        ID_inst->rt_val = MEM_inst->rt_val;
-                    }
-                }
+                shDE->ReadData1 = shEM->ALURes;
             }
-            if (ID_inst->instruction_type == I_INST) {
-                //check load-I
-                if ((EX_inst->type == LOAD_TYPE) || (MEM_inst->type == LOAD_TYPE)) {
-                    if (EX_inst->type == LOAD_TYPE) {
-                        if (EX_inst->rt == ID_inst->rs) {
-                            PC = PC - 2; //insert nop
-                            IF_inst->encoded_inst = 0x00000000;
-                            makeIDtoNOP();
-                        }
-                    } else if (MEM_inst->type == LOAD_TYPE) {
-                        if (MEM_inst->rt == ID_inst->rs) {
-                            if (MEM_inst->rt == ID_inst->rs) {
-                                ID_inst->rs_val = MEM_inst->rt_val;
-                            }
-                            if (MEM_inst->rt == ID_inst->rt) {
-                                ID_inst->rt_val = MEM_inst->rt_val;
-                            }
-                        }
-                    }
+            if ((shDE->RegRt == shEM->RegDst) && (shEM->RegDst != 0) && (shDE->RegRt != 0)) {
+                if (shEM->type == LOAD_TYPE) {
+                    shFD->inst_fetched = 0x00000000;
+                    shFD->PC = shFD->PC - 2;
+                    return;
                 }
-                //check R-I
-                if ((EX_inst->instruction_type == R_INST) || (MEM_inst->instruction_type == R_INST)) {
-                    if (EX_inst->rd == ID_inst->rs) {
-                        ID_inst->rs_val = EX_inst->rd_val;
-                    } else if (MEM_inst->rd == ID_inst->rs) {
-                        ID_inst->rs_val = MEM_inst->rd_val;
-                    }
-                }
-                //check I-I
-                if ((EX_inst->instruction_type == I_INST) || (MEM_inst->instruction_type == I_INST)) {
-                    if (EX_inst->rt == ID_inst->rs) {
-                        ID_inst->rs_val = EX_inst->rt_val;
-                    } else if (MEM_inst->rt == ID_inst->rs) {
-                        ID_inst->rs_val = MEM_inst->rt_val;
-                    }
-                }
-            }
-            break;
-        case STORE_TYPE:
-            if ((EX_inst->instruction_type == R_INST) || (MEM_inst->instruction_type == R_INST)) {
-                //R-store
-                if (EX_inst->rd == ID_inst->rs) {
-                    ID_inst->rs_val = EX_inst->rd_val;
-                } else if (MEM_inst->rd == ID_inst->rs) {
-                    ID_inst->rs_val = MEM_inst->rd_val;
-                }
-                if (EX_inst->rd == ID_inst->rt) {
-                    ID_inst->rt_val = EX_inst->rd_val;
-                } else if (MEM_inst->rd == ID_inst->rt) {
-                    ID_inst->rt_val = EX_inst->rd_val;
-                }
-            }
-            if ((EX_inst->instruction_type == I_INST) || (MEM_inst->instruction_type == I_INST)) {
-                //I-store
-                if (EX_inst->rt == ID_inst->rs) {
-                    ID_inst->rs_val = EX_inst->rt_val;
-                }
-                else if (MEM_inst->rt == ID_inst->rs) {
-                    ID_inst->rs_val = MEM_inst->rt_val;
-                }
-                if (EX_inst->rt == ID_inst->rt) {
-                    ID_inst->rt_val = EX_inst->rt_val;
-                }
-                else if (MEM_inst->rt == ID_inst->rt) {
-                    ID_inst->rt_val = MEM_inst->rt_val;
-                }
-            }
-            //load-store
-            if((EX_inst->type == LOAD_TYPE) || (MEM_inst->type == LOAD_TYPE)){
-                if(EX_inst->type == LOAD_TYPE){
-                    if(EX_inst->rt == ID_inst->rt){
-                        PC = PC - 2; //insert nop
-                        IF_inst->encoded_inst = 0x00000000;
-                        makeIDtoNOP();
-                    }
-                }
-                else if((MEM_inst->type == LOAD_TYPE) && (EX_inst->rt != ID_inst->rt)){
-                    if(MEM_inst->rt == ID_inst->rt){
-                        ID_inst->rt_val = MEM_inst->rt_val;
-                    }
-                }
-            }
-            break;
-        case LOAD_TYPE:
-            //int load_address = ID_inst->rs_val + ID_inst->immed;
-            //load-load
-            if((EX_inst->type == LOAD_TYPE || MEM_inst->type == LOAD_TYPE)){
-                if(EX_inst->type == LOAD_TYPE){
-                    if(EX_inst->rt == ID_inst->rs){
-                        PC = PC- 2;
-                        IF_inst->encoded_inst = 0x00000000;
-                        makeIDtoNOP();
-                    }
-                }
-                if((MEM_inst->type == LOAD_TYPE) && (EX_inst->rt != ID_inst->rs)){
-                    if(MEM_inst->rt == ID_inst->rs){
-                        ID_inst->rs_val = MEM_inst->rt;
-                    }
-                }
-            }
-            //R-load
-            if((EX_inst->instruction_type == R_INST) || (MEM_inst->instruction_type == R_INST)){
-                if (EX_inst->rd == ID_inst->rs) {
-                    ID_inst->rs_val = EX_inst->rd_val;
-                }
-                else if(MEM_inst-> rd == ID_inst->rs){
-                    ID_inst->rs_val = MEM_inst->rd_val;
-                }
-            }
-            //I-load
-            if((EX_inst->instruction_type == I_INST) || (MEM_inst->instruction_type == I_INST)){
-                if (EX_inst->rt == ID_inst->rs) {
-                    ID_inst->rs_val = EX_inst->rt_val;
-                }
-                else if(MEM_inst-> rt == ID_inst->rs){
-                    ID_inst->rs_val = MEM_inst->rt_val;
-                }
+                shDE->ReadData2 = shEM->ALURes;
             }
             break;
 
+        case I_TYPE:
+            if ((shDE->RegRs == shMW->RegDst) && (shMW->RegDst != 0) && (shDE->RegRs != 0)) {
+                if (shMW->type == LOAD_TYPE) {
+                    shDE->ReadData1 = shMW->Mem_Data_Read;
+                }
+                shDE->ReadData1 = shMW->ALURes;
+            }
+            if ((shDE->RegRs == shEM->RegDst) && (shEM->RegDst != 0) && (shDE->RegRs != 0)) {
+                if (shEM->type == LOAD_TYPE) {
+                    shFD->inst_fetched = 0x00000000;
+                    shFD->PC = shFD->PC - 2;
+                }
+                shDE->ReadData1 = shEM->ALURes;
+            }
+            break;
 
+        case BR_TYPE:
+            if ((shDE->RegRs == shMW->RegDst) && (((shMW->RegDst != 0) && (shDE->RegRs != 0)) || (!strcmp(shDE->name, "JR")))){
+                if (shMW->type == LOAD_TYPE) {
+                    shDE->ReadData1 = shMW->Mem_Data_Read;
+                }
+                else {
+                    shDE->ReadData1 = shMW->ALURes;
+                }
+                if(!strcmp(shDE->name, "JR")){
+                    shDE->target_branch = shDE->ReadData1;
+                }
+            }
+
+            if ((shDE->RegRt == shMW->RegDst) && (shMW->RegDst != 0) && (shDE->RegRt != 0) && (shDE->RegRt != 0)) {
+                if (shMW->type == LOAD_TYPE) {
+                    shDE->ReadData2 = shMW->Mem_Data_Read;
+                }
+                shDE->ReadData2 = shMW->ALURes;
+            }
+
+            if ((shDE->RegRs == shEM->RegDst) && (((shEM->RegDst != 0) && (shDE->RegRs != 0)) || (!strcmp(shDE->name, "JR")))) {
+                if (shEM->type == LOAD_TYPE) {
+                    shFD->inst_fetched = 0x00000000;
+                    shFD->PC = shFD->PC - 2;
+                    control_hazard = 1;
+                    return;
+                }
+                shDE->ReadData1 = shEM->ALURes;
+                if(!strcmp(shDE->name, "JR")){
+                    shDE->target_branch = shDE->ReadData1;
+                }
+            }
+            if ((shDE->RegRt == shEM->RegDst) && (shEM->RegDst != 0) && (shDE->RegRt != 0) && (shDE->RegRt != 0)) {
+                if (shEM->type == LOAD_TYPE) {
+                    shFD->inst_fetched = 0x00000000;
+                    shFD->PC = shFD->PC - 2;
+                    control_hazard = 1;
+                    return;
+                }
+                shDE->ReadData2 = shEM->ALURes;
+            }
+
+            if(!control_hazard){
+                if(strcmp(shDE->name, "BLTZ")){
+                    if(shDE->ReadData1 < 0){
+                        branched = 1;
+                    }
+                }
+                else if(!strcmp(shDE->name, "BEQ")){
+                    if(shDE->ReadData1 == shDE->ReadData2){
+                        branched = 1;
+                    }
+                }
+                else if(!strcmp(shDE->name, "BNE")){
+                    if(shDE->ReadData1 != shDE-> ReadData2){
+                        branched = 1;
+                    }
+                }
+                else if(!strcmp(shDE->name, "BGTZ")){
+                    if(shDE->ReadData1 > 0){
+                        branched = 1;
+                    }
+                }
+                else if(!strcmp(shDE->name, "BLEZ")){
+                    if(shDE->ReadData1 <= 0){
+                        branched = 1;
+                    }
+                }
+                else if(!strcmp(shDE->name, "JR")){
+                    branched = 1;
+                    shDE->target_branch = (shDE->target_branch)/4;
+                }
+                if(branched){
+                    branched = 0;
+                    if(!strcmp(shDE->name, "JR")){
+                        shFD->PC = shDE->target_branch;
+                    }
+                    else{
+                        shFD->PC = shFD->PC + shDE->target_branch;
+                    }
+                }
+            }
+            control_hazard = 0;
+            break;
+        default:
+            //printf("Bypass hazard check\n");
+            break;
     }
+
+    //printf("Hazard_Forwarding: %s\nPC = %d\n", shDE->name, shFD->PC);
 }
